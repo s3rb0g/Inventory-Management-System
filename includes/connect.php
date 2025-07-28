@@ -3,7 +3,7 @@
 $db_server  = "localhost";
 $db_user    = "root";
 $db_pass    = "Qwerty12345";
-$db_name    = "system_template";
+$db_name    = "ims";
 
 global $db_conn;
 $db_conn = "";

@@ -11,6 +11,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'login') {
         $account = mysqli_fetch_assoc($results);
         if (password_verify($password, $account['password'])) {
             $_SESSION['user_access'] = $account['access'];
+            $_SESSION['user_id'] = $account['id'];
 
             if ($account['access'] == 1) {
                 echo "admin";

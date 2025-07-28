@@ -3,7 +3,7 @@ session_start();
 
 if (isset($_SESSION['user_access'])) {
    if ($_SESSION['user_access'] == 1) {
-      header('location: pages/admin.php');
+      header('location: pages/admin_dashboard.php');
    } elseif ($_SESSION['user_access'] == 2) {
    }
 } else {
@@ -22,13 +22,12 @@ if (isset($_SESSION['user_access'])) {
    <meta name="description" content="">
    <meta name="author" content="">
 
-   <title>SB Admin 2 - Login</title>
+   <title>Parametric E&C</title>
+   <link rel="icon" type="image/png" href="assets/img/logo.png">
 
    <!-- Custom fonts for this template-->
    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-   <link
-      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-      rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
    <!-- Custom styles for this template-->
    <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
@@ -100,7 +99,7 @@ if (isset($_SESSION['user_access'])) {
             },
             success: function(response) {
                if (response === "admin") {
-                  window.location.href = "pages/admin.php";
+                  window.location.href = "pages/admin_dashboard.php";
                } else {
                   alert("Incorrect username or password.");
                   document.querySelector('input[name="username"]').value = "";
