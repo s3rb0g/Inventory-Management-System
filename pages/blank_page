@@ -2,12 +2,12 @@
 include('../includes/header.php');
 
 if (isset($_SESSION['user_access'])) {
-    if ($_SESSION['user_access'] == 1) {
-        // header('location: admin_dashboard.php');
-    } elseif ($_SESSION['user_access'] == 2) {
-    }
+   if ($_SESSION['user_access'] == 1) {
+      // header('location: admin_dashboard.php');
+   } elseif ($_SESSION['user_access'] == 2) {
+   }
 } else {
-    header('location: ../index.php');
+   header('location: ../index.php');
 }
 ?>
 
