@@ -4,6 +4,7 @@
 
 <!-- Custom styles for this template-->
 <link href="../assets/css/sb-admin-2.min.css" rel="stylesheet">
+<link href="../assets/css/style.css" rel="stylesheet">
 
 <!-- DataTables Bootstrap 4 CSS -->
 <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">

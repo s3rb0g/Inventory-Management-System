@@ -20,8 +20,8 @@ if (isset($_SESSION['user_access'])) {
       <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
    </div> -->
-
-   <div class="card shadow mb-4">
+   <h1>Dashboard</h1>
+   <!-- <div class="card shadow mb-4">
       <div class="card-header py-3.5 pt-4">
          <h4 class="float-left">Account List</h4>
          <button type="button" class="btn btn-secondary float-right">
@@ -80,7 +80,7 @@ if (isset($_SESSION['user_access'])) {
             </table>
          </div>
       </div>
-   </div>
+   </div> -->
 </div>
 <!-- /.container-fluid -->
 

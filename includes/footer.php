@@ -30,3 +30,10 @@
 include("../includes/footer-link.php");
 include("../includes/modal.php");
 ?>
+
+<script>
+   function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+      document.body.style.overflow = 'auto';
+   }
+</script>

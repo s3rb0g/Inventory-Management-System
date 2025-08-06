@@ -41,11 +41,3 @@ function getStatusValue($id)
       return "Unknown Access";
    }
 }
-?>
-
-<script>
-   function closePopup() {
-      document.getElementById('popup').style.display = 'none';
-      document.body.style.overflow = 'auto';
-   }
-</script>

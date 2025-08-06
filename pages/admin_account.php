@@ -35,6 +35,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       ob_end_flush();
       exit;
    }
+
+   // Edit account ....................................................................................
+   if (isset($_POST['edit_account'])) {
+      $id = $_POST['edit_id'];
+      $title = $_POST['edit_title'];
+      $firstname = filter_input(INPUT_POST, 'edit_firstname', FILTER_SANITIZE_SPECIAL_CHARS);
+      $lastname = filter_input(INPUT_POST, 'edit_lastname', FILTER_SANITIZE_SPECIAL_CHARS);
+      $username = filter_input(INPUT_POST, 'edit_username', FILTER_SANITIZE_SPECIAL_CHARS);
+      $role = $_POST['edit_role'];
+      $status = $_POST['edit_status'];
+
+      $result = mysqli_query($db_conn, "UPDATE tbl_accounts SET title='$title', firstname='$firstname', lastname='$lastname', username='$username', access='$role', status='$status' WHERE id='$id'");
+
+      if ($result) {
+         $_SESSION["message"] = "Account updated successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to update account.";
+      }
+
+      header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+      ob_end_flush();
+      exit;
+   }
 }
 
 ?>
@@ -67,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                <tbody>
 
                   <?php
-                  $result = mysqli_query($db_conn, "SELECT * FROM tbl_accounts WHERE access != 1 AND status = 1 ORDER BY id ASC");
+                  $result = mysqli_query($db_conn, "SELECT * FROM tbl_accounts WHERE access != 1 ORDER BY id ASC");
                   if (mysqli_num_rows($result) > 0):
                      while ($row = mysqli_fetch_assoc($result)):
                   ?>
@@ -78,10 +101,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                            <td><?php echo !empty($row["firstname"]) ? $row["firstname"] : "" ?></td>
                            <td><?php echo !empty($row["lastname"]) ? $row["lastname"] : "" ?></td>
                            <td><?php echo !empty($row["access"]) ? getAccessValue($row["access"]) : "" ?></td>
-                           <td><?php echo !empty($row["status"]) ? getStatusValue($row["status"]) : "" ?></td>
+                           <td><?php echo isset($row["status"]) ? getStatusValue($row["status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
-                              <button type="button" class="edit btn btn-sm btn-primary mr-2" onclick="editAccount()">Edit</button>
-                              <button type="button" class="delete btn btn-sm btn-danger" onclick="deleteAccount()">Delete</button>
+                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount('<?php echo $row['id']; ?>', '<?php echo $row['title']; ?>', '<?php echo $row['firstname']; ?>', '<?php echo $row['lastname']; ?>', '<?php echo $row['username']; ?>', '<?php echo $row['access']; ?>', '<?php echo $row['status']; ?>')">Edit</button>
+                              <button type="button" class="btn btn-sm btn-danger" onclick="deleteAccount()">Delete</button>
                            </td>
                         </tr>
 
@@ -115,8 +138,21 @@ include('../includes/footer.php');
       $('#role').val('');
    }
 
-   function editAccount(id) {
-      // $('#editAccountModal').modal('show');
+   function editAccount(id, title, firstname, lastname, username, access, status) {
+
+      var titleLabel = title == "Ar." ? "Architect (Ar.)" : (title == "Engr." ? "Engineer (Engr.)" : "");
+      var roleLabel = access == 2 ? "Editor" : "Viewer";
+      var statusLabel = status == 1 ? "Active" : "Inactive";
+
+      $('#edit_id').val(id);
+      $('#edit_title').val(title).text(titleLabel);
+      $('#edit_firstname').val(firstname);
+      $('#edit_lastname').val(lastname);
+      $('#edit_username').val(username);
+      $('#edit_role').val(access).text(roleLabel);
+      $('#edit_status').val(status).text(statusLabel);
+
+      $('#editAccountModal').modal('show');
    }
 
    function deleteAccount(id) {
