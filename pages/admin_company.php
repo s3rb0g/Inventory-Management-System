@@ -9,6 +9,35 @@ if (isset($_SESSION['user_access'])) {
 } else {
    header('location: ../index.php');
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+   // Add company ....................................................................................
+   if (isset($_POST['add_company'])) {
+      $company_name = filter_input(INPUT_POST, 'company_name', FILTER_SANITIZE_SPECIAL_CHARS);
+      $company_email = filter_input(INPUT_POST, 'company_email', FILTER_SANITIZE_SPECIAL_CHARS);
+      $company_address = filter_input(INPUT_POST, 'company_address', FILTER_SANITIZE_SPECIAL_CHARS);
+      $company_num = $_POST['company_number'];
+      $company_number = implode(',', $company_num);
+      $contact_person = filter_input(INPUT_POST, 'contact_person', FILTER_SANITIZE_SPECIAL_CHARS);
+      $contact_num = $_POST['contact_number'];
+      $contact_number = implode(',', $contact_num);
+      $status = 1;
+
+      $result = mysqli_query($db_conn, "INSERT INTO tbl_companies (company_name, company_email, company_address, company_number, contact_person, contact_number, company_status) VALUES ('$company_name', '$company_email', '$company_address', '$company_number', '$contact_person', '$contact_number', '$status')");
+
+      if ($result) {
+         $_SESSION["message"] = "Company created successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to create company.";
+      }
+
+      header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+      ob_end_flush();
+      exit;
+   }
+}
+
 ?>
 
 <!-- Begin Page Content -->
@@ -16,7 +45,7 @@ if (isset($_SESSION['user_access'])) {
    <div class="card shadow mb-4">
       <div class="card-header py-3.5 pt-4">
          <h4 class="float-left">Company List</h4>
-         <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#createCompanyModal" onclick="resetForm();">
+         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createCompanyModal" onclick="resetForm();">
             <i class="fa fa-plus pr-1"></i> Add Company
          </button>
       </div>
@@ -28,8 +57,8 @@ if (isset($_SESSION['user_access'])) {
                   <tr class="text-center">
                      <th>ID</th>
                      <th>Company Name</th>
+                     <th>Address</th>
                      <th>Contact Person</th>
-                     <th>Contact Number</th>
                      <th>Status</th>
                      <th style="width: 170px;">Actions</th>
                   </tr>
@@ -37,29 +66,29 @@ if (isset($_SESSION['user_access'])) {
 
                <tbody>
 
-                  <!-- <?php
-                        $result = mysqli_query($db_conn, "SELECT * FROM tbl_accounts WHERE access != 1 ORDER BY id ASC");
-                        if (mysqli_num_rows($result) > 0):
-                           while ($row = mysqli_fetch_assoc($result)):
-                        ?>
+                  <?php
+                  $result = mysqli_query($db_conn, "SELECT * FROM tbl_companies ORDER BY id ASC");
+                  if (mysqli_num_rows($result) > 0):
+                     while ($row = mysqli_fetch_assoc($result)):
+                  ?>
 
                         <tr>
                            <td class="text-center"><?php echo !empty($row["id"]) ? $row["id"] : "" ?></td>
-                           <td><?php echo !empty($row["title"]) ? $row["title"] : "" ?></td>
-                           <td><?php echo !empty($row["firstname"]) ? $row["firstname"] : "" ?></td>
-                           <td><?php echo !empty($row["lastname"]) ? $row["lastname"] : "" ?></td>
-                           <td><?php echo !empty($row["access"]) ? getAccessValue($row["access"]) : "" ?></td>
-                           <td><?php echo isset($row["status"]) ? getStatusValue($row["status"]) : "" ?></td>
+                           <td><?php echo !empty($row["company_name"]) ? $row["company_name"] : "" ?></td>
+                           <td><?php echo !empty($row["company_address"]) ? $row["company_address"] : "" ?></td>
+                           <td><?php echo !empty($row["contact_person"]) ? $row["contact_person"] : "" ?></td>
+                           <td><?php echo isset($row["company_status"]) ? getStatusValue($row["company_status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
-                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount('<?php echo $row['id']; ?>', '<?php echo $row['title']; ?>', '<?php echo $row['firstname']; ?>', '<?php echo $row['lastname']; ?>', '<?php echo $row['username']; ?>', '<?php echo $row['access']; ?>', '<?php echo $row['status']; ?>')">Edit</button>
-                              <button type="button" class="btn btn-sm btn-danger" onclick="deleteAccount()">Delete</button>
+                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount()" disabled>
+                                 <i class="fas fa-eye"></i> View
+                              </button>
                            </td>
                         </tr>
 
                   <?php
-                           endwhile;
-                        endif;
-                  ?> -->
+                     endwhile;
+                  endif;
+                  ?>
 
                </tbody>
             </table>
@@ -95,8 +124,7 @@ include('../includes/footer.php');
       <input type="number" name="company_number[]" class="form-control">
       <button type="button" class="btn btn-danger btn-sm ml-2 mt-1" style="height: 30px;" onclick="removeCompanyNumber(this)">
          <i class="fa fa-times" aria-hidden="true"></i>
-      </button>
-   `;
+      </button>`;
       companyNumberList.appendChild(newNumberDiv);
    }
 
@@ -110,7 +138,7 @@ include('../includes/footer.php');
       }
    }
 
-   // Add Company Number 
+   // Add Contact Number 
    function addContactNumber() {
       const contactNumberList = document.getElementById("contactNumberList");
       const newContactDiv = document.createElement("div");
@@ -119,12 +147,11 @@ include('../includes/footer.php');
       <input type="number" name="contact_number[]" class="form-control">
       <button type="button" class="btn btn-danger btn-sm ml-2 mt-1" style="height: 30px;" onclick="removeContactNumber(this)">
          <i class="fa fa-times" aria-hidden="true"></i>
-      </button>
-   `;
+      </button>`;
       contactNumberList.appendChild(newContactDiv);
    }
 
-   // Remove Company Number 
+   // Remove Contact Number 
    function removeContactNumber(button) {
       const container = button.closest('.d-flex.align-items-stretch');
       const parentList = container.parentElement;

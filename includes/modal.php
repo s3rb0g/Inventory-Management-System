@@ -56,7 +56,7 @@
 <div class="modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-         <div class="modal-header bg-success text-white">
+         <div class="modal-header bg-primary text-white">
             <h5 class="modal-title" id="exampleModalLabel">Create an Account</h5>
             <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="true">x</span>
@@ -102,7 +102,7 @@
             </div>
 
             <div class="modal-footer">
-               <input type="submit" name="add_account" value="Save" class="btn btn-success pr-3">
+               <input type="submit" name="add_account" value="Save" class="btn btn-primary pr-3">
                <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
             </div>
          </form>
@@ -115,7 +115,7 @@
 <div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-         <div class="modal-header bg-success text-white">
+         <div class="modal-header bg-primary text-white">
             <h5 class="modal-title" id="exampleModalLabel">Edit an Account</h5>
             <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="true">x</span>
@@ -172,11 +172,37 @@
             </div>
 
             <div class="modal-footer">
-               <input type="submit" name="edit_account" value="Save" class="btn btn-success pr-3">
+               <input type="submit" name="edit_account" value="Save" class="btn btn-primary pr-3">
                <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
             </div>
          </form>
 
+      </div>
+   </div>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header bg-danger">
+            <h5 class="modal-title text-white">Delete an Account</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <p class="h5">Are you sure you want to delete this account permanently?</p>
+         </div>
+
+         <div class="modal-footer">
+            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+               <input type="hidden" name="id" value="" id="delete_account_id">
+               <input type="submit" name="delete_account" value="Confirm" class="btn btn-danger pr-3">
+               <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </form>
+         </div>
       </div>
    </div>
 </div>
@@ -194,7 +220,6 @@
 
          <div class="modal-body">
             <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
-
                <div class="row">
                   <div class="col-md-6">
                      <div class="mb-3">
@@ -253,7 +278,7 @@
                         </div>
                         <div id="contactNumberList">
                            <div class="d-flex align-items-stretch mb-2">
-                              <input type="number" name="contact_number[]" class="form-control">
+                              <input type="number" name="contact_number[]" class="form-control" required>
                               <button type="button" class="btn btn-danger btn-sm ml-2 mt-1" style="height: 30px;" onclick="removeContactNumber(this)">
                                  <i class="fa fa-times" aria-hidden="true"></i>
                               </button>
@@ -262,10 +287,43 @@
                      </div>
                   </div>
                </div>
+               <hr>
+
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="mb-3">
+                        <label for="company_bir" class="form-label">BIR</label>
+                        <input type="file" name="company_bir" id="company_bir" class="form-control" accept="application/pdf">
+                     </div>
+                  </div>
+
+                  <div class="col-md-6">
+                     <div class="mb-3">
+                        <label for="company_dti" class="form-label">DTI/SEC</label>
+                        <input type="file" name="company_dti" id="company_dti" class="form-control" accept="application/pdf">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="mb-3">
+                        <label for="company_permit" class="form-label">Mayor's Permit</label>
+                        <input type="file" name="company_permit" id="company_permit" class="form-control" accept="application/pdf">
+                     </div>
+                  </div>
+
+                  <div class="col-md-6">
+                     <div class="mb-3">
+                        <label for="company_invoice" class="form-label">Sample Invoice</label>
+                        <input type="file" name="company_invoice" id="company_invoice" class="form-control" accept="application/pdf">
+                     </div>
+                  </div>
+               </div>
          </div>
 
          <div class="modal-footer">
-            <input type="submit" name="add_Company" value="Save" class="btn btn-primary pr-3" disabled>
+            <input type="submit" name="add_company" value="Save" class="btn btn-primary pr-3">
             <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
             </form>
          </div>

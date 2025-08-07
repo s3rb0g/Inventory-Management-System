@@ -58,6 +58,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       ob_end_flush();
       exit;
    }
+
+   // Delete account submit ...........................................................................
+   if (isset($_POST['delete_account'])) {
+      $id = $_POST['id'];
+      $result = mysqli_query($db_conn, "DELETE FROM tbl_accounts WHERE id='$id' ");
+
+      if ($result) {
+         $_SESSION["message"] = "Account deleted successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to delete account.";
+      }
+
+      header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+      ob_end_flush();
+      exit;
+   }
 }
 
 ?>
@@ -67,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    <div class="card shadow mb-4">
       <div class="card-header py-3.5 pt-4">
          <h4 class="float-left">Account List</h4>
-         <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#createAccountModal" onclick="resetForm();">
+         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createAccountModal" onclick="resetForm();">
             <i class="fa fa-plus pr-1"></i> Add Account
          </button>
       </div>
@@ -103,8 +119,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                            <td><?php echo !empty($row["access"]) ? getAccessValue($row["access"]) : "" ?></td>
                            <td><?php echo isset($row["status"]) ? getStatusValue($row["status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
-                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount('<?php echo $row['id']; ?>', '<?php echo $row['title']; ?>', '<?php echo $row['firstname']; ?>', '<?php echo $row['lastname']; ?>', '<?php echo $row['username']; ?>', '<?php echo $row['access']; ?>', '<?php echo $row['status']; ?>')">Edit</button>
-                              <button type="button" class="btn btn-sm btn-danger" onclick="deleteAccount()">Delete</button>
+                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount('<?php echo $row['id']; ?>', '<?php echo $row['title']; ?>', '<?php echo $row['firstname']; ?>', '<?php echo $row['lastname']; ?>', '<?php echo $row['username']; ?>', '<?php echo $row['access']; ?>', '<?php echo $row['status']; ?>')">
+                                 <i class="fa fa-edit"></i> Edit
+                              </button>
+                              <button type="button" class="btn btn-sm btn-danger" onclick="deleteAccount('<?php echo $row['id']; ?>')">
+                                 <i class="fa fa-trash"></i> Delete
+                              </button>
                            </td>
                         </tr>
 
@@ -151,11 +171,11 @@ include('../includes/footer.php');
       $('#edit_username').val(username);
       $('#edit_role').val(access).text(roleLabel);
       $('#edit_status').val(status).text(statusLabel);
-
       $('#editAccountModal').modal('show');
    }
 
    function deleteAccount(id) {
-      // $('#editAccountModal').modal('show');
+      $('#delete_account_id').val(id);
+      $('#deleteAccountModal').modal('show');
    }
 </script>
