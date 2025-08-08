@@ -27,6 +27,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $result = mysqli_query($db_conn, "INSERT INTO tbl_companies (company_name, company_email, company_address, company_number, contact_person, contact_number, company_status) VALUES ('$company_name', '$company_email', '$company_address', '$company_number', '$contact_person', '$contact_number', '$status')");
 
       if ($result) {
+         $inserted_id = mysqli_insert_id($db_conn);
+
+         if (isset($_FILES['company_bir']) && $_FILES['company_bir']['error'] == 0) {
+
+            $bir_name = $_FILES["company_bir"]["name"];
+
+            $bir_file_name = $inserted_id . '_BIR.pdf';
+            $bir_old_path = $_FILES["company_bir"]["tmp_name"];
+            $bir_new_path = 'upload_file/BIR/' . $bir_file_name;
+            move_uploaded_file($bir_old_path, $bir_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_companies SET bir = '$bir_file_name', bir_name = '$bir_name' WHERE id = '$inserted_id'");
+         }
+
+         if (isset($_FILES['company_dti']) && $_FILES['company_dti']['error'] == 0) {
+
+            $dti_name = $_FILES["company_dti"]["name"];
+
+            $dti_file_name = $inserted_id . '_DTI.pdf';
+            $dti_old_path = $_FILES["company_dti"]["tmp_name"];
+            $dti_new_path = 'upload_file/DTI/' . $dti_file_name;
+            move_uploaded_file($dti_old_path, $dti_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_companies SET dti = '$dti_file_name', dti_name = '$dti_name' WHERE id = '$inserted_id'");
+         }
+
+         if (isset($_FILES['company_permit']) && $_FILES['company_permit']['error'] == 0) {
+
+            $permit_name = $_FILES["company_permit"]["name"];
+
+            $permit_file_name = $inserted_id . '_PERMIT.pdf';
+            $permit_old_path = $_FILES["company_permit"]["tmp_name"];
+            $permit_new_path = 'upload_file/PERMIT/' . $permit_file_name;
+            move_uploaded_file($permit_old_path, $permit_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_companies SET permit = '$permit_file_name', permit_name = '$permit_name' WHERE id = '$inserted_id'");
+         }
+
+         if (isset($_FILES['company_invoice']) && $_FILES['company_invoice']['error'] == 0) {
+
+            $invoice_name = $_FILES["company_invoice"]["name"];
+
+            $invoice_file_name = $inserted_id . '_INVOICE.pdf';
+            $invoice_old_path = $_FILES["company_invoice"]["tmp_name"];
+            $invoice_new_path = 'upload_file/INVOICE/' . $invoice_file_name;
+            move_uploaded_file($invoice_old_path, $invoice_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_companies SET invoice = '$invoice_file_name', invoice_name = '$invoice_name' WHERE id = '$inserted_id'");
+         }
+
          $_SESSION["message"] = "Company created successfully.";
       } else {
          $_SESSION["message"] = "Failed to create company.";
@@ -79,12 +129,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                            <td><?php echo !empty($row["contact_person"]) ? $row["contact_person"] : "" ?></td>
                            <td><?php echo isset($row["company_status"]) ? getStatusValue($row["company_status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
-                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount()" disabled>
-                                 <i class="fas fa-eye"></i> View
-                              </button>
+                              <a href="admin_viewCompany.php?id=<?php echo $row['id']; ?>">
+                                 <button type="button" class="btn btn-sm btn-primary mr-2">
+                                    <i class="fas fa-eye"></i> View
+                                 </button>
+                              </a>
                            </td>
                         </tr>
-
+                        <!-- <a href="company_view.php?id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm">View</a> -->
                   <?php
                      endwhile;
                   endif;

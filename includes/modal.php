@@ -219,7 +219,7 @@
          </div>
 
          <div class="modal-body">
-            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
                <div class="row">
                   <div class="col-md-6">
                      <div class="mb-3">
