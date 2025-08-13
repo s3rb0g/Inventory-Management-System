@@ -9,6 +9,12 @@ if (isset($_SESSION['user_access'])) {
 } else {
    header('location: ../index.php');
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+   header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+   ob_end_flush();
+   exit;
+}
 ?>
 
 <!-- Begin Page Content -->

@@ -34,6 +34,100 @@ $company = mysqli_fetch_assoc($result);
 $company_number = explode(',', $company['company_number']);
 $contact_number = explode(',', $company['contact_number']);
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+   // Edit company ....................................................................................
+   if (isset($_POST['edit_company'])) {
+      $edit_comapny_id = $_POST['edit_company_id'];
+      $edit_company_name = filter_input(INPUT_POST, 'edit_company_name', FILTER_SANITIZE_SPECIAL_CHARS);
+      $edit_company_email = filter_input(INPUT_POST, 'edit_company_email', FILTER_SANITIZE_SPECIAL_CHARS);
+      $edit_company_address = filter_input(INPUT_POST, 'edit_company_address', FILTER_SANITIZE_SPECIAL_CHARS);
+      $edit_company_num = $_POST['edit_company_number'];
+      $edit_company_number = implode(',', $edit_company_num);
+      $edit_contact_person = filter_input(INPUT_POST, 'edit_contact_person', FILTER_SANITIZE_SPECIAL_CHARS);
+      $edit_contact_num = $_POST['edit_contact_number'];
+      $edit_contact_number = implode(',', $edit_contact_num);
+      $edit_contact_status = $_POST['edit_company_status'];
+
+      $result = mysqli_query($db_conn, "UPDATE tbl_companies SET company_name='$edit_company_name', company_email='$edit_company_email', company_address='$edit_company_address', company_number='$edit_company_number', contact_person='$edit_contact_person', contact_number='$edit_contact_number', company_status='$edit_contact_status' WHERE id='$edit_comapny_id'");
+
+      if ($result) {
+
+         if (isset($_FILES['edit_company_bir']) && $_FILES['edit_company_bir']['error'] == 0) {
+
+            $bir_name = $_FILES["edit_company_bir"]["name"];
+
+            $bir_file_name = $edit_comapny_id . '_BIR.pdf';
+            $bir_old_path = $_FILES["edit_company_bir"]["tmp_name"];
+            $bir_new_path = 'upload_file/BIR/' . $bir_file_name;
+            move_uploaded_file($bir_old_path, $bir_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_companies SET bir = '$bir_file_name', bir_name = '$bir_name' WHERE id = '$edit_comapny_id'");
+         }
+
+         if (isset($_FILES['edit_company_dti']) && $_FILES['edit_company_dti']['error'] == 0) {
+
+            $dti_name = $_FILES["edit_company_dti"]["name"];
+
+            $dti_file_name = $edit_comapny_id . '_DTI.pdf';
+            $dti_old_path = $_FILES["edit_company_dti"]["tmp_name"];
+            $dti_new_path = 'upload_file/DTI/' . $dti_file_name;
+            move_uploaded_file($dti_old_path, $dti_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_companies SET dti = '$dti_file_name', dti_name = '$dti_name' WHERE id = '$edit_comapny_id'");
+         }
+
+         if (isset($_FILES['edit_company_permit']) && $_FILES['edit_company_permit']['error'] == 0) {
+
+            $permit_name = $_FILES["edit_company_permit"]["name"];
+
+            $permit_file_name = $edit_comapny_id . '_PERMIT.pdf';
+            $permit_old_path = $_FILES["edit_company_permit"]["tmp_name"];
+            $permit_new_path = 'upload_file/PERMIT/' . $permit_file_name;
+            move_uploaded_file($permit_old_path, $permit_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_companies SET permit = '$permit_file_name', permit_name = '$permit_name' WHERE id = '$edit_comapny_id'");
+         }
+
+         if (isset($_FILES['edit_company_invoice']) && $_FILES['edit_company_invoice']['error'] == 0) {
+
+            $invoice_name = $_FILES["edit_company_invoice"]["name"];
+
+            $invoice_file_name = $edit_comapny_id . '_INVOICE.pdf';
+            $invoice_old_path = $_FILES["edit_company_invoice"]["tmp_name"];
+            $invoice_new_path = 'upload_file/INVOICE/' . $invoice_file_name;
+            move_uploaded_file($invoice_old_path, $invoice_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_companies SET invoice = '$invoice_file_name', invoice_name = '$invoice_name' WHERE id = '$edit_comapny_id'");
+         }
+
+         $_SESSION["message"] = "Company updated successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to update company.";
+      }
+
+      header("Refresh: .3; url=admin_company.php");
+      ob_end_flush();
+      exit;
+   }
+
+   // Delete company ...........................................................................
+   if (isset($_POST['delete_company'])) {
+      $id = $_POST['id'];
+      $result = mysqli_query($db_conn, "DELETE FROM tbl_companies WHERE id='$id' ");
+
+      if ($result) {
+         $_SESSION["message"] = "Company deleted successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to delete company.";
+      }
+
+      header("Refresh: .3; url=admin_company.php");
+      ob_end_flush();
+      exit;
+   }
+}
+
 ?>
 
 <!-- Begin Page Content -->
@@ -124,10 +218,10 @@ $contact_number = explode(',', $company['contact_number']);
                   <td class="d-flex justify-content-center align-items-center">
                      <?php if (!empty($company['bir'])): ?>
                         <a href="upload_file/BIR/<?php echo $company['bir']; ?>" target="_blank">
-                           <button class="btn btn-sm bg-primary text-white">View</button>
+                           <button class="btn btn-sm bg-primary text-white">
+                              <i class="fas fa-eye mr-1"></i> View
+                           </button>
                         </a>
-                     <?php else: ?>
-                        <button class="btn btn-sm bg-primary text-white" disabled>Upload</button>
                      <?php endif; ?>
                   </td>
                </tr>
@@ -137,10 +231,10 @@ $contact_number = explode(',', $company['contact_number']);
                   <td class="d-flex justify-content-center align-items-center">
                      <?php if (!empty($company['dti'])): ?>
                         <a href="upload_file/DTI/<?php echo $company['dti']; ?>" target="_blank">
-                           <button class="btn btn-sm bg-primary text-white">View</button>
+                           <button class="btn btn-sm bg-primary text-white">
+                              <i class="fas fa-eye mr-1"></i> View
+                           </button>
                         </a>
-                     <?php else: ?>
-                        <button class="btn btn-sm bg-primary text-white" disabled>Upload</button>
                      <?php endif; ?>
                   </td>
                </tr>
@@ -150,10 +244,10 @@ $contact_number = explode(',', $company['contact_number']);
                   <td class="d-flex justify-content-center align-items-center">
                      <?php if (!empty($company['permit'])): ?>
                         <a href="upload_file/PERMIT/<?php echo $company['permit']; ?>" target="_blank">
-                           <button class="btn btn-sm bg-primary text-white">View</button>
+                           <button class="btn btn-sm bg-primary text-white">
+                              <i class="fas fa-eye mr-1"></i> View
+                           </button>
                         </a>
-                     <?php else: ?>
-                        <button class="btn btn-sm bg-primary text-white" disabled>Upload</button>
                      <?php endif; ?>
                   </td>
                </tr>
@@ -163,10 +257,10 @@ $contact_number = explode(',', $company['contact_number']);
                   <td class="d-flex justify-content-center align-items-center">
                      <?php if (!empty($company['invoice'])): ?>
                         <a href="upload_file/INVOICE/<?php echo $company['invoice']; ?>" target="_blank">
-                           <button class="btn btn-sm bg-primary text-white">View</button>
+                           <button class="btn btn-sm bg-primary text-white">
+                              <i class="fas fa-eye mr-1"></i> View
+                           </button>
                         </a>
-                     <?php else: ?>
-                        <button class="btn btn-sm bg-primary text-white" disabled>Upload</button>
                      <?php endif; ?>
                   </td>
                </tr>

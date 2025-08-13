@@ -462,7 +462,7 @@
          </div>
 
          <div class="modal-footer">
-            <input type="submit" name="edit_company" value="Save" class="btn btn-primary pr-3" disabled>
+            <input type="submit" name="edit_company" value="Save" class="btn btn-primary pr-3">
             <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
             </form>
          </div>
@@ -489,7 +489,7 @@
          <div class="modal-footer">
             <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                <input type="hidden" name="id" value="" id="delete_company_id">
-               <input type="submit" name="delete_company" value="Confirm" class="btn btn-danger pr-3" disabled>
+               <input type="submit" name="delete_company" value="Confirm" class="btn btn-danger pr-3">
                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
             </form>
          </div>
