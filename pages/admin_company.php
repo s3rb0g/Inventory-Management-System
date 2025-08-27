@@ -22,9 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $contact_person = filter_input(INPUT_POST, 'contact_person', FILTER_SANITIZE_SPECIAL_CHARS);
       $contact_num = $_POST['contact_number'];
       $contact_number = implode(',', $contact_num);
+      $company_link = filter_input(INPUT_POST, 'company_link', FILTER_SANITIZE_SPECIAL_CHARS);
       $status = 1;
 
-      $result = mysqli_query($db_conn, "INSERT INTO tbl_companies (company_name, company_email, company_address, company_number, contact_person, contact_number, company_status) VALUES ('$company_name', '$company_email', '$company_address', '$company_number', '$contact_person', '$contact_number', '$status')");
+      $result = mysqli_query($db_conn, "INSERT INTO tbl_companies (company_name, company_email, company_address, company_number, contact_person, contact_number, company_link, company_status) VALUES ('$company_name', '$company_email', '$company_address', '$company_number', '$contact_person', '$contact_number', '$company_link', '$status')");
 
       if ($result) {
          $inserted_id = mysqli_insert_id($db_conn);
@@ -75,6 +76,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             move_uploaded_file($invoice_old_path, $invoice_new_path);
 
             mysqli_query($db_conn, "UPDATE tbl_companies SET invoice = '$invoice_file_name', invoice_name = '$invoice_name' WHERE id = '$inserted_id'");
+         }
+
+         if (isset($_FILES['company_certification']) && $_FILES['company_certification']['error'] == 0) {
+
+            $certification_name = $_FILES["company_certification"]["name"];
+
+            $certification_file_name = $inserted_id . '_CERTIFICATION.pdf';
+            $certification_old_path = $_FILES["company_certification"]["tmp_name"];
+            $certification_new_path = 'upload_file/CERTIFICATION/' . $certification_file_name;
+            move_uploaded_file($certification_old_path, $certification_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_companies SET certification = '$certification_file_name', certification_name = '$certification_name' WHERE id = '$inserted_id'");
          }
 
          $_SESSION["message"] = "Company created successfully.";
@@ -136,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               </a>
                            </td>
                         </tr>
-                        <!-- <a href="company_view.php?id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm">View</a> -->
+
                   <?php
                      endwhile;
                   endif;

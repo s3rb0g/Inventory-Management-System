@@ -213,6 +213,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <td></td>
                </tr>
                <tr>
+                  <th>Link Address</th>
+                  <td><?php echo !empty($company['company_link']) ? $company['company_link'] : "<i class='text-danger'>No Link Address Registered</i>"; ?></td>
+                  <td class="d-flex justify-content-center align-items-center">
+                     <?php if (!empty($company['company_link'])): ?>
+                        <a href="<?php echo $company['company_link']; ?>" target="_blank">
+                           <button class="btn btn-sm bg-primary text-white">
+                              <i class="fas fa-eye mr-1"></i> View
+                           </button>
+                        </a>
+                     <?php endif; ?>
+                  </td>
+               </tr>
+               <tr>
                   <th>BIR</th>
                   <td><?php echo !empty($company['bir_name']) ? $company['bir_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
                   <td class="d-flex justify-content-center align-items-center">
@@ -257,6 +270,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <td class="d-flex justify-content-center align-items-center">
                      <?php if (!empty($company['invoice'])): ?>
                         <a href="upload_file/INVOICE/<?php echo $company['invoice']; ?>" target="_blank">
+                           <button class="btn btn-sm bg-primary text-white">
+                              <i class="fas fa-eye mr-1"></i> View
+                           </button>
+                        </a>
+                     <?php endif; ?>
+                  </td>
+               </tr>
+               <tr>
+                  <th>Certification</th>
+                  <td><?php echo !empty($company['certification_name']) ? $company['certification_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
+                  <td class="d-flex justify-content-center align-items-center">
+                     <?php if (!empty($company['certification'])): ?>
+                        <a href="upload_file/CERTIFICATION/<?php echo $company['certification']; ?>" target="_blank">
                            <button class="btn btn-sm bg-primary text-white">
                               <i class="fas fa-eye mr-1"></i> View
                            </button>

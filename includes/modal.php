@@ -287,6 +287,16 @@
                      </div>
                   </div>
                </div>
+
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="mb-3">
+                        <label for="company_link" class="form-label mb-3">Link Address</label>
+                        <input type="text" name="company_link" id="company_link" class="form-control">
+                     </div>
+                  </div>
+               </div>
+
                <hr>
 
                <div class="row">
@@ -317,6 +327,15 @@
                      <div class="mb-3">
                         <label for="company_invoice" class="form-label">Sample Invoice</label>
                         <input type="file" name="company_invoice" id="company_invoice" class="form-control" accept="application/pdf">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="mb-3">
+                        <label for="company_certification" class="form-label">Certification</label>
+                        <input type="file" name="company_certification" id="company_certification" class="form-control" accept="application/pdf">
                      </div>
                   </div>
                </div>
