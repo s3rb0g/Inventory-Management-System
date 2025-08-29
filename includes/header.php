@@ -66,6 +66,7 @@ include("../includes/ajax.php");
                      <a class="collapse-item" href="admin_account.php">Account</a>
                      <a class="collapse-item" href="admin_company.php">Company</a>
                      <a class="collapse-item" href="admin_item.php">Item</a>
+                     <a class="collapse-item" href="admin_service.php">Service</a>
                   </div>
                </div>
             </li>

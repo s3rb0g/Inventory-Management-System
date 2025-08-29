@@ -47,9 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $edit_contact_person = filter_input(INPUT_POST, 'edit_contact_person', FILTER_SANITIZE_SPECIAL_CHARS);
       $edit_contact_num = $_POST['edit_contact_number'];
       $edit_contact_number = implode(',', $edit_contact_num);
+      $edit_company_link = filter_input(INPUT_POST, 'edit_company_link', FILTER_SANITIZE_SPECIAL_CHARS);
       $edit_contact_status = $_POST['edit_company_status'];
 
-      $result = mysqli_query($db_conn, "UPDATE tbl_companies SET company_name='$edit_company_name', company_email='$edit_company_email', company_address='$edit_company_address', company_number='$edit_company_number', contact_person='$edit_contact_person', contact_number='$edit_contact_number', company_status='$edit_contact_status' WHERE id='$edit_comapny_id'");
+      $result = mysqli_query($db_conn, "UPDATE tbl_companies SET company_name='$edit_company_name', company_email='$edit_company_email', company_address='$edit_company_address', company_number='$edit_company_number', contact_person='$edit_contact_person', contact_number='$edit_contact_number', company_link='$edit_company_link', company_status='$edit_contact_status' WHERE id='$edit_comapny_id'");
 
       if ($result) {
 
@@ -101,6 +102,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_query($db_conn, "UPDATE tbl_companies SET invoice = '$invoice_file_name', invoice_name = '$invoice_name' WHERE id = '$edit_comapny_id'");
          }
 
+         if (isset($_FILES['edit_company_certification']) && $_FILES['edit_company_certification']['error'] == 0) {
+
+            $certification_name = $_FILES["edit_company_certification"]["name"];
+
+            $certification_file_name = $edit_comapny_id . '_CERTIFICATION.pdf';
+            $certification_old_path = $_FILES["edit_company_certification"]["tmp_name"];
+            $certification_new_path = 'upload_file/CERTIFICATION/' . $certification_file_name;
+            move_uploaded_file($certification_old_path, $certification_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_companies SET certification = '$certification_file_name', certification_name = '$certification_name' WHERE id = '$edit_comapny_id'");
+         }
+
          $_SESSION["message"] = "Company updated successfully.";
       } else {
          $_SESSION["message"] = "Failed to update company.";
@@ -147,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <i class="fa fa-trash pr-1"></i> Delete
          </button>
 
-         <button type="button" class="btn btn-warning float-right mr-2" onclick="editCompany('<?php echo $company['id']; ?>', '<?php echo $company['company_name']; ?>', '<?php echo $company['company_email']; ?>', '<?php echo $company['company_address']; ?>', '<?php echo $company['contact_person']; ?>', '<?php echo $company['company_status']; ?>')">
+         <button type="button" class="btn btn-warning float-right mr-2" onclick="editCompany('<?php echo $company['id']; ?>', '<?php echo $company['company_name']; ?>', '<?php echo $company['company_email']; ?>', '<?php echo $company['company_address']; ?>', '<?php echo $company['contact_person']; ?>', '<?php echo $company['company_link']; ?>', '<?php echo $company['company_status']; ?>')">
             <i class="fa fa-edit pr-1"></i> Edit
          </button>
       </div>
@@ -303,12 +316,13 @@ include('../includes/footer.php');
 ?>
 
 <script>
-   function editCompany(id, name, email, address, contactPerson, status) {
+   function editCompany(id, name, email, address, contactPerson, link, status) {
       $('#edit_company_id').val(id);
       $('#edit_company_name').val(name);
       $('#edit_company_email').val(email);
       $('#edit_company_address').val(address);
       $('#edit_contact_person').val(contactPerson);
+      $('#edit_company_link').val(link);
       $('#edit_companystatus').val(status).text(status == 1 ? "Active" : "Inactive");
       $('#editCompanyModal').modal('show');
    }

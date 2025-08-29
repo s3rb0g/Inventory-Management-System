@@ -15,15 +15,15 @@ if (isset($_SESSION['user_access'])) {
 <div class="container-fluid">
    <div class="card shadow mb-4">
       <div class="card-header py-3.5 pt-4">
-         <h4 class="float-left">Item List</h4>
-         <button type="button" class="btn btn-primary float-right" onclick="resetForm_item();">
-            <i class="fa fa-plus pr-1"></i> Add Item
+         <h4 class="float-left">Service List</h4>
+         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createCompanyModal" disabled>
+            <i class="fa fa-plus pr-1"></i> Add Service
          </button>
       </div>
 
       <div class="card-body">
          <div class="table-responsive">
-            <table class=" table table-bordered table-hover" id="itemTable" width="100%" cellspacing="0">
+            <table class=" table table-bordered table-hover" id="serviceTable" width="100%" cellspacing="0">
                <thead class="bg-primary text-white">
                   <tr class="text-center">
                      <th>ID</th>
@@ -75,11 +75,6 @@ include('../includes/footer.php');
 
 <script>
    $(document).ready(function() {
-      $('#itemTable').DataTable();
+      $('#serviceTable').DataTable();
    });
-
-   function resetForm_item() {
-
-      $('#registerAccountModal').modal('show');
-   }
 </script>

@@ -436,6 +436,15 @@
                      </div>
                   </div>
                </div>
+
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="mb-3">
+                        <label for="edit_company_link" class="form-label mb-3">Link Address</label>
+                        <input type="text" name="edit_company_link" id="edit_company_link" class="form-control">
+                     </div>
+                  </div>
+               </div>
                <hr>
 
                <div class="row">
@@ -466,6 +475,15 @@
                      <div class="mb-3">
                         <label for="edit_company_invoice" class="form-label">Sample Invoice</label>
                         <input type="file" name="edit_company_invoice" id="edit_company_invoice" class="form-control" accept="application/pdf">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="mb-3">
+                        <label for="edit_company_certification" class="form-label">Certification</label>
+                        <input type="file" name="edit_company_certification" id="edit_company_certification" class="form-control" accept="application/pdf">
                      </div>
                   </div>
                </div>
@@ -512,6 +530,93 @@
                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
             </form>
          </div>
+      </div>
+   </div>
+</div>
+
+<!-- Register Item Modal -->
+<div class="modal fade" id="registerAccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Register Item</h5>
+            <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">x</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
+
+
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="mb-3">
+                        <label for="edit_company_name" class="form-label">Name <span style="color: red;">*</span></label>
+                        <input type="text" name="edit_company_name" id="edit_company_name" class="form-control" required>
+                     </div>
+                  </div>
+
+                  <div class="col-md-6">
+                     <div class="mb-3">
+                        <label for="edit_company_email" class="form-label">Email</label>
+                        <input type="text" name="edit_company_email" id="edit_company_email" class="form-control">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="mb-3">
+                  <label for="item_name" class="form-label">Name <span style="color: red;">*</span></label>
+                  <input type="text" name="item_name" id="item_name" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="title" class="form-label">Title <span style="color: red;">*</span></label>
+                  <select name="title" id="title" class="form-control">
+                     <option value="" hidden></option>
+                     <option value="Ar.">Architect (Ar.)</option>
+                     <option value="Engr.">Engineer (Engr.)</option>
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <label for="item_image" class="form-label">Image</label>
+                  <input type="file" name="item_image" id="item_image" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="item_specification" class="form-label">Specification <span style="color: red;">*</span></label>
+                  <input type="text" name="item_specification" id="item_specification" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="item_brand" class="form-label">Brand</label>
+                  <input type="text" name="item_brand" id="item_brand" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="item_cost" class="form-label">Cost <span style="color: red;">*</span></label>
+                  <input type="text" name="item_cost" id="item_cost" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="item_vat" class="form-label">VAT <span style="color: red;">*</span></label>
+                  <input type="text" name="item_vat" id="item_vat" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="item_sheet" class="form-label">Data Sheet</label>
+                  <input type="file" name="item_sheet" id="item_sheet" class="form-control" required>
+               </div>
+
+         </div>
+
+         <div class="modal-footer">
+            <input type="submit" name="add_account" value="Save" class="btn btn-primary pr-3">
+            <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
+            </form>
+         </div>
+
       </div>
    </div>
 </div>
