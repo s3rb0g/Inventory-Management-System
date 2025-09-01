@@ -56,17 +56,30 @@ include("../includes/ajax.php");
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-               <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                  aria-expanded="true" aria-controls="collapseTwo">
+               <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+                  aria-expanded="true" aria-controls="collapseOne">
                   <i class="fas fa-fw fa-cogs"></i>
                   <span>Management</span>
                </a>
-               <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+               <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                   <div class="bg-white py-2 collapse-inner rounded">
                      <a class="collapse-item" href="admin_account.php">Account</a>
                      <a class="collapse-item" href="admin_company.php">Company</a>
                      <a class="collapse-item" href="admin_item.php">Item</a>
-                     <a class="collapse-item" href="admin_service.php">Service</a>
+                  </div>
+               </div>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                  aria-expanded="true" aria-controls="collapseTwo">
+                  <i class="fas fa-boxes"></i>
+                  <span>Operations</span>
+               </a>
+               <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                  <div class="bg-white py-2 collapse-inner rounded">
+                     <a class="collapse-item" href="admin_material.php">Materials</a>
+                     <a class="collapse-item" href="admin_service.php">Services</a>
                   </div>
                </div>
             </li>

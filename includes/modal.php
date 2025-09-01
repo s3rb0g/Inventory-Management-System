@@ -351,6 +351,178 @@
    </div>
 </div>
 
+<!-- Create Company Modal -->
+<div class="modal fade" id="viewCompanyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+         <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Company Details</h5>
+            <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">x</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <div class="table-responsive table-bordered table-striped table-hover">
+               <table class="table table-bordered">
+                  <tr>
+                     <th class="col-3">Name</th>
+                     <td class="col-8" id="companyDetails_name"></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <th>Email</th>
+                     <td id="companyDetails_email"><?php echo !empty($company['company_email']) ? $company['company_email'] : "<i class='text-danger'>No Company Email Registered</i>"; ?></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <th>Address</th>
+                     <td id="companyDetails_address"></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <th>Number</th>
+
+                     <td>
+                        <?php
+                        if (!empty($company['company_number'])) {
+                           foreach ($company_number as $index => $number) {
+                              echo htmlspecialchars($number);
+                              echo "<br>";
+                           }
+                        } else {
+                           echo "<i class='text-danger'>No Company Number Registered</i>";
+                        }
+                        ?>
+                     </td>
+                     <td></td>
+
+                  </tr>
+                  <tr>
+                     <th>Contact Person</th>
+                     <td><?php echo $company['contact_person']; ?></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <th>Contact Number</th>
+                     <td>
+                        <?php
+                        foreach ($contact_number as $index => $number) {
+                           if ($index > 0) {
+                              echo "<br>";
+                           }
+                           echo htmlspecialchars($number);
+                        }
+                        ?>
+                     </td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <th>Status</th>
+                     <td><?php echo getStatusValue($company['company_status']); ?></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <th>Link Address</th>
+                     <td><?php echo !empty($company['company_link']) ? $company['company_link'] : "<i class='text-danger'>No Link Address Registered</i>"; ?></td>
+                     <td class="d-flex justify-content-center align-items-center">
+                        <?php if (!empty($company['company_link'])): ?>
+                           <a href="<?php echo $company['company_link']; ?>" target="_blank">
+                              <button class="btn btn-sm bg-primary text-white">
+                                 <i class="fas fa-eye mr-1"></i> View
+                              </button>
+                           </a>
+                        <?php endif; ?>
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>BIR</th>
+                     <td><?php echo !empty($company['bir_name']) ? $company['bir_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
+                     <td class="d-flex justify-content-center align-items-center">
+                        <?php if (!empty($company['bir'])): ?>
+                           <a href="upload_file/BIR/<?php echo $company['bir']; ?>" target="_blank">
+                              <button class="btn btn-sm bg-primary text-white">
+                                 <i class="fas fa-eye mr-1"></i> View
+                              </button>
+                           </a>
+                        <?php endif; ?>
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>DTI/SEC</th>
+                     <td><?php echo !empty($company['dti_name']) ? $company['dti_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
+                     <td class="d-flex justify-content-center align-items-center">
+                        <?php if (!empty($company['dti'])): ?>
+                           <a href="upload_file/DTI/<?php echo $company['dti']; ?>" target="_blank">
+                              <button class="btn btn-sm bg-primary text-white">
+                                 <i class="fas fa-eye mr-1"></i> View
+                              </button>
+                           </a>
+                        <?php endif; ?>
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>Mayor's Permit</th>
+                     <td><?php echo !empty($company['permit_name']) ? $company['permit_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
+                     <td class="d-flex justify-content-center align-items-center">
+                        <?php if (!empty($company['permit'])): ?>
+                           <a href="upload_file/PERMIT/<?php echo $company['permit']; ?>" target="_blank">
+                              <button class="btn btn-sm bg-primary text-white">
+                                 <i class="fas fa-eye mr-1"></i> View
+                              </button>
+                           </a>
+                        <?php endif; ?>
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>Sample Invoice</th>
+                     <td><?php echo !empty($company['invoice_name']) ? $company['invoice_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
+                     <td class="d-flex justify-content-center align-items-center">
+                        <?php if (!empty($company['invoice'])): ?>
+                           <a href="upload_file/INVOICE/<?php echo $company['invoice']; ?>" target="_blank">
+                              <button class="btn btn-sm bg-primary text-white">
+                                 <i class="fas fa-eye mr-1"></i> View
+                              </button>
+                           </a>
+                        <?php endif; ?>
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>Certification</th>
+                     <td><?php echo !empty($company['certification_name']) ? $company['certification_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
+                     <td class="d-flex justify-content-center align-items-center">
+                        <?php if (!empty($company['certification'])): ?>
+                           <a href="upload_file/CERTIFICATION/<?php echo $company['certification']; ?>" target="_blank">
+                              <button class="btn btn-sm bg-primary text-white">
+                                 <i class="fas fa-eye mr-1"></i> View
+                              </button>
+                           </a>
+                        <?php endif; ?>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+         </div>
+
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger float-right mr-2" onclick="deleteCompany('<?php echo $company['id']; ?>')">
+               <i class="fa fa-trash pr-1"></i> Delete
+            </button>
+
+            <button type="button" class="btn btn-warning float-right mr-2" onclick="editCompany('<?php echo $company['id']; ?>', '<?php echo $company['company_name']; ?>', '<?php echo $company['company_email']; ?>', '<?php echo $company['company_address']; ?>', '<?php echo $company['contact_person']; ?>', '<?php echo $company['company_link']; ?>', '<?php echo $company['company_status']; ?>')">
+               <i class="fa fa-edit pr-1"></i> Edit
+            </button>
+
+            <button type="button" class="btn btn-secondary float-right mr-2" data-dismiss="modal">
+               <i class="fa fa-chevron-left pr-1"></i> Close
+            </button>
+
+         </div>
+
+      </div>
+   </div>
+</div>
+
 <!-- Edit Company Modal -->
 <div class="modal fade" id="editCompanyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -536,7 +708,7 @@
 
 <!-- Register Item Modal -->
 <div class="modal fade" id="registerAccountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
       <div class="modal-content">
          <div class="modal-header bg-primary text-white">
             <h5 class="modal-title" id="exampleModalLabel">Register Item</h5>
@@ -548,71 +720,35 @@
          <div class="modal-body">
             <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
 
-
-               <div class="row">
-                  <div class="col-md-6">
-                     <div class="mb-3">
-                        <label for="edit_company_name" class="form-label">Name <span style="color: red;">*</span></label>
-                        <input type="text" name="edit_company_name" id="edit_company_name" class="form-control" required>
-                     </div>
-                  </div>
-
-                  <div class="col-md-6">
-                     <div class="mb-3">
-                        <label for="edit_company_email" class="form-label">Email</label>
-                        <input type="text" name="edit_company_email" id="edit_company_email" class="form-control">
-                     </div>
-                  </div>
-               </div>
-
                <div class="mb-3">
-                  <label for="item_name" class="form-label">Name <span style="color: red;">*</span></label>
+                  <label for="item_name" class="form-label">Item Name <span style="color: red;">*</span></label>
                   <input type="text" name="item_name" id="item_name" class="form-control" required>
                </div>
 
                <div class="mb-3">
-                  <label for="title" class="form-label">Title <span style="color: red;">*</span></label>
-                  <select name="title" id="title" class="form-control">
-                     <option value="" hidden></option>
-                     <option value="Ar.">Architect (Ar.)</option>
-                     <option value="Engr.">Engineer (Engr.)</option>
-                  </select>
-               </div>
-
-               <div class="mb-3">
-                  <label for="item_image" class="form-label">Image</label>
-                  <input type="file" name="item_image" id="item_image" class="form-control" required>
+                  <label for="item_brand" class="form-label">Brand</label>
+                  <input type="text" name="item_brand" id="item_brand" class="form-control">
                </div>
 
                <div class="mb-3">
                   <label for="item_specification" class="form-label">Specification <span style="color: red;">*</span></label>
-                  <input type="text" name="item_specification" id="item_specification" class="form-control" required>
+                  <textarea name="item_specification" id="item_specification" class="form-control" rows="4" required></textarea>
                </div>
 
                <div class="mb-3">
-                  <label for="item_brand" class="form-label">Brand</label>
-                  <input type="text" name="item_brand" id="item_brand" class="form-control" required>
-               </div>
-
-               <div class="mb-3">
-                  <label for="item_cost" class="form-label">Cost <span style="color: red;">*</span></label>
-                  <input type="text" name="item_cost" id="item_cost" class="form-control" required>
-               </div>
-
-               <div class="mb-3">
-                  <label for="item_vat" class="form-label">VAT <span style="color: red;">*</span></label>
-                  <input type="text" name="item_vat" id="item_vat" class="form-control" required>
+                  <label for="item_image" class="form-label">Image</label>
+                  <input type="file" name="item_image" id="item_image" class="form-control" accept=".jpg, .jpeg, .png, .webp, .svg, .gif">
                </div>
 
                <div class="mb-3">
                   <label for="item_sheet" class="form-label">Data Sheet</label>
-                  <input type="file" name="item_sheet" id="item_sheet" class="form-control" required>
+                  <input type="file" name="item_sheet" id="item_sheet" class="form-control" accept="application/pdf">
                </div>
 
          </div>
 
          <div class="modal-footer">
-            <input type="submit" name="add_account" value="Save" class="btn btn-primary pr-3">
+            <input type="submit" name="add_item" value="Save" class="btn btn-primary pr-3">
             <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
             </form>
          </div>

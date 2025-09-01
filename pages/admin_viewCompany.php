@@ -143,6 +143,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ?>
 
+<!-- <a href="admin_viewCompany.php?id=<?php echo $row['id']; ?>">
+   <button type="button" class="btn btn-sm btn-primary mr-2">
+      <i class="fas fa-eye"></i> View
+   </button> data-toggle="modal" data-target="#createCompanyModal" 
+</a> -->
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 

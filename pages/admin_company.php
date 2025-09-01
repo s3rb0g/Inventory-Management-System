@@ -142,11 +142,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                            <td><?php echo !empty($row["contact_person"]) ? $row["contact_person"] : "" ?></td>
                            <td><?php echo isset($row["company_status"]) ? getStatusValue($row["company_status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
-                              <a href="admin_viewCompany.php?id=<?php echo $row['id']; ?>">
-                                 <button type="button" class="btn btn-sm btn-primary mr-2">
-                                    <i class="fas fa-eye"></i> View
-                                 </button>
-                              </a>
+                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="viewDetails(<?php echo $row['id']; ?>)">
+                                 <i class="fas fa-eye"></i> View
+                              </button>
                            </td>
                         </tr>
 
@@ -171,6 +169,61 @@ include('../includes/footer.php');
    $(document).ready(function() {
       $('#companyTable').DataTable();
    });
+
+   function viewDetails(companyId) {
+      $.ajax({
+         url: '../includes/ajax.php',
+         type: 'POST',
+         data: {
+            action: 'company_details',
+            company_id: companyId
+         },
+         dataType: 'json',
+         success: function(response) {
+
+            $('#companyDetails_name').text("Name");
+            $('#companyDetails_email').text("Email");
+            $('#companyDetails_address').text("adddd");
+
+
+
+
+            // $('#viewCompanyModal #companyAddress').text(company.company_address);
+            // $('#viewCompanyModal #companyNumber').text(company.company_number);
+            // $('#viewCompanyModal #contactPerson').text(company.contact_person);
+            // $('#viewCompanyModal #contactNumber').text(company.contact_number);
+            // $('#viewCompanyModal #companyLink').html('<a href="' + company.company_link + '" target="_blank">' + company.company_link + '</a>');
+            // $('#viewCompanyModal #companyStatus').text(company.company_status == 1 ? 'Active' : 'Inactive');
+
+            // // Display file links if they exist
+            // if (company.bir) {
+            //    $('#viewCompanyModal #companyBIR').html('<a href="upload_file/BIR/' + company.bir + '" target="_blank">' + company.bir_name + '</a>');
+            // } else {
+            //    $('#viewCompanyModal #companyBIR').text('N/A');
+            // }
+
+            // if (company.dti) {
+            //    $('#viewCompanyModal #companyDTI').html('<a href="upload_file/DTI/' + company.dti + '" target="_blank">' + company.dti_name + '</a>');
+            // } else {
+            //    $('#viewCompanyModal #companyDTI').text('N/A');
+            // }
+
+            // if (company.permit) {
+            //    $('#viewCompanyModal #companyPermit').html('<a href="upload_file/PERMIT/' + company.permit + '" target="_blank">' + company.permit_name + '</a>');
+            // } else {
+            //    $('#viewCompanyModal #companyPermit').text('N/A');
+            // }
+
+            // if (company.invoice) {
+            //    $('#viewCompanyModal #companyInvoice').html('<a href="upload_file/INVOICE/' + company.invoice + '" target="_blank">' + company.invoice_name + '</a>');
+            // } else {
+            //    $('#viewCompanyModal #companyInvoice').text('N/A');
+            // }
+         }
+      });
+
+      $('#viewCompanyModal').modal('show');
+   }
 
    function resetForm() {
       // $('#title').val('');
