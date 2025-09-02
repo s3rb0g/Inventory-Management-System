@@ -181,48 +181,87 @@ include('../includes/footer.php');
          dataType: 'json',
          success: function(response) {
 
-            $('#companyDetails_name').text("Name");
-            $('#companyDetails_email').text("Email");
-            $('#companyDetails_address').text("adddd");
+            $('#companyDetails_name').text(response.company_name);
+            $('#companyDetails_email').html(response.company_email);
+            $('#companyDetails_address').text(response.company_address);
 
+            $('#companyDetails_number').html(response.company_number);
+            $('#companyDetails_conPerson').text(response.contact_person);
+            $('#companyDetails_conNumber').html(response.contact_number);
+            $('#companyDetails_status').text(response.company_status);
 
+            $('#companyDetails_link').html(response.company_link);
+            $('#companyDetails_link_btn').html(response.company_link_btn);
 
+            $('#companyDetails_bir').html(response.bir_name);
+            $('#companyDetails_bir_btn').html(response.bir_btn);
 
-            // $('#viewCompanyModal #companyAddress').text(company.company_address);
-            // $('#viewCompanyModal #companyNumber').text(company.company_number);
-            // $('#viewCompanyModal #contactPerson').text(company.contact_person);
-            // $('#viewCompanyModal #contactNumber').text(company.contact_number);
-            // $('#viewCompanyModal #companyLink').html('<a href="' + company.company_link + '" target="_blank">' + company.company_link + '</a>');
-            // $('#viewCompanyModal #companyStatus').text(company.company_status == 1 ? 'Active' : 'Inactive');
+            $('#companyDetails_dti').html(response.dti_name);
+            $('#companyDetails_dti_btn').html(response.dti_btn);
 
-            // // Display file links if they exist
-            // if (company.bir) {
-            //    $('#viewCompanyModal #companyBIR').html('<a href="upload_file/BIR/' + company.bir + '" target="_blank">' + company.bir_name + '</a>');
-            // } else {
-            //    $('#viewCompanyModal #companyBIR').text('N/A');
-            // }
+            $('#companyDetails_permit').html(response.permit_name);
+            $('#companyDetails_permit_btn').html(response.permit_btn);
 
-            // if (company.dti) {
-            //    $('#viewCompanyModal #companyDTI').html('<a href="upload_file/DTI/' + company.dti + '" target="_blank">' + company.dti_name + '</a>');
-            // } else {
-            //    $('#viewCompanyModal #companyDTI').text('N/A');
-            // }
+            $('#companyDetails_invoice').html(response.invoice_name);
+            $('#companyDetails_invoice_btn').html(response.invoice_btn);
 
-            // if (company.permit) {
-            //    $('#viewCompanyModal #companyPermit').html('<a href="upload_file/PERMIT/' + company.permit + '" target="_blank">' + company.permit_name + '</a>');
-            // } else {
-            //    $('#viewCompanyModal #companyPermit').text('N/A');
-            // }
+            $('#companyDetails_certification').html(response.certification_name);
+            $('#companyDetails_certification_btn').html(response.certification_btn);
 
-            // if (company.invoice) {
-            //    $('#viewCompanyModal #companyInvoice').html('<a href="upload_file/INVOICE/' + company.invoice + '" target="_blank">' + company.invoice_name + '</a>');
-            // } else {
-            //    $('#viewCompanyModal #companyInvoice').text('N/A');
-            // }
+            $("#deleteCompany_btn").attr("onclick", "deleteCompany(" + response.company_id + ")");
+
+            $("#editCompany_btn").attr("onclick",
+               "editCompany(" +
+               JSON.stringify(companyId) + ", " +
+               JSON.stringify(response.company_name) + ", " +
+               JSON.stringify(response.company_email) + ", " +
+               JSON.stringify(response.company_address) + ", " +
+               JSON.stringify(response.company_number) + ", " +
+               JSON.stringify(response.contact_person) + ", " +
+               JSON.stringify(response.contact_number) + ", " +
+               JSON.stringify(response.company_link) + ", " +
+               JSON.stringify(response.company_status) +
+               ")"
+            );
+
+            $('#viewCompanyModal').modal('show');
+         },
+         error: function(xhr, status, error) {
+            console.error("AJAX Error:");
+            console.error("Response Text: " + xhr.responseText);
          }
       });
 
-      $('#viewCompanyModal').modal('show');
+   }
+
+   function deleteCompany(id) {
+      $('#delete_company_id').val(id);
+      $('#viewCompanyModal').modal('hide');
+      $('#deleteCompanyModal').modal('show');
+   }
+
+   function editCompany(id, name, email, address, companyNumber, contactPerson, contactNumber, link, status) {
+
+      console.log(id);
+      console.log(name);
+      console.log(email);
+      console.log(address);
+      console.log(companyNumber);
+      console.log(contactPerson);
+      console.log(contactNumber);
+      console.log(link);
+      console.log(status);
+
+      // $('#edit_company_id').val(id);
+      // $('#edit_company_name').val(name);
+      // $('#edit_company_email').val(email);
+      // $('#edit_company_address').val(address);
+      // $('#edit_contact_person').val(contactPerson);
+      // $('#edit_company_link').val(link);
+      // $('#edit_companystatus').val(status).text(status == 1 ? "Active" : "Inactive");
+
+      $('#viewCompanyModal').modal('hide');
+      $('#editCompanyModal').modal('show');
    }
 
    function resetForm() {

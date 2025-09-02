@@ -41,3 +41,15 @@ function getStatusValue($id)
       return "Unknown Access";
    }
 }
+
+function getContactNumber($contact_number)
+{
+   $string_number = "";
+   $array_number = explode(',', $contact_number);
+
+   foreach ($array_number as $index => $number) {
+      $string_number .= $number . "<br>";
+   }
+               
+   return $string_number;
+}

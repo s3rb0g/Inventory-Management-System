@@ -351,7 +351,7 @@
    </div>
 </div>
 
-<!-- Create Company Modal -->
+<!-- View Company Modal -->
 <div class="modal fade" id="viewCompanyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
@@ -367,12 +367,12 @@
                <table class="table table-bordered">
                   <tr>
                      <th class="col-3">Name</th>
-                     <td class="col-8" id="companyDetails_name"></td>
+                     <td class="col-7" id="companyDetails_name"></td>
                      <td></td>
                   </tr>
                   <tr>
                      <th>Email</th>
-                     <td id="companyDetails_email"><?php echo !empty($company['company_email']) ? $company['company_email'] : "<i class='text-danger'>No Company Email Registered</i>"; ?></td>
+                     <td id="companyDetails_email"></td>
                      <td></td>
                   </tr>
                   <tr>
@@ -382,134 +382,64 @@
                   </tr>
                   <tr>
                      <th>Number</th>
-
-                     <td>
-                        <?php
-                        if (!empty($company['company_number'])) {
-                           foreach ($company_number as $index => $number) {
-                              echo htmlspecialchars($number);
-                              echo "<br>";
-                           }
-                        } else {
-                           echo "<i class='text-danger'>No Company Number Registered</i>";
-                        }
-                        ?>
-                     </td>
+                     <td id="companyDetails_number"></td>
                      <td></td>
-
                   </tr>
                   <tr>
                      <th>Contact Person</th>
-                     <td><?php echo $company['contact_person']; ?></td>
+                     <td id="companyDetails_conPerson"></td>
                      <td></td>
                   </tr>
                   <tr>
                      <th>Contact Number</th>
-                     <td>
-                        <?php
-                        foreach ($contact_number as $index => $number) {
-                           if ($index > 0) {
-                              echo "<br>";
-                           }
-                           echo htmlspecialchars($number);
-                        }
-                        ?>
-                     </td>
+                     <td id="companyDetails_conNumber"></td>
                      <td></td>
                   </tr>
                   <tr>
                      <th>Status</th>
-                     <td><?php echo getStatusValue($company['company_status']); ?></td>
+                     <td id="companyDetails_status"></td>
                      <td></td>
                   </tr>
                   <tr>
                      <th>Link Address</th>
-                     <td><?php echo !empty($company['company_link']) ? $company['company_link'] : "<i class='text-danger'>No Link Address Registered</i>"; ?></td>
-                     <td class="d-flex justify-content-center align-items-center">
-                        <?php if (!empty($company['company_link'])): ?>
-                           <a href="<?php echo $company['company_link']; ?>" target="_blank">
-                              <button class="btn btn-sm bg-primary text-white">
-                                 <i class="fas fa-eye mr-1"></i> View
-                              </button>
-                           </a>
-                        <?php endif; ?>
-                     </td>
+                     <td id="companyDetails_link"></td>
+                     <td id="companyDetails_link_btn" class="d-flex justify-content-center align-items-center"></td>
                   </tr>
                   <tr>
                      <th>BIR</th>
-                     <td><?php echo !empty($company['bir_name']) ? $company['bir_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
-                     <td class="d-flex justify-content-center align-items-center">
-                        <?php if (!empty($company['bir'])): ?>
-                           <a href="upload_file/BIR/<?php echo $company['bir']; ?>" target="_blank">
-                              <button class="btn btn-sm bg-primary text-white">
-                                 <i class="fas fa-eye mr-1"></i> View
-                              </button>
-                           </a>
-                        <?php endif; ?>
-                     </td>
+                     <td id="companyDetails_bir"></td>
+                     <td id="companyDetails_bir_btn" class="d-flex justify-content-center align-items-center"></td>
                   </tr>
                   <tr>
                      <th>DTI/SEC</th>
-                     <td><?php echo !empty($company['dti_name']) ? $company['dti_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
-                     <td class="d-flex justify-content-center align-items-center">
-                        <?php if (!empty($company['dti'])): ?>
-                           <a href="upload_file/DTI/<?php echo $company['dti']; ?>" target="_blank">
-                              <button class="btn btn-sm bg-primary text-white">
-                                 <i class="fas fa-eye mr-1"></i> View
-                              </button>
-                           </a>
-                        <?php endif; ?>
-                     </td>
+                     <td id="companyDetails_dti"></td>
+                     <td id="companyDetails_dti_btn" class="d-flex justify-content-center align-items-center"></td>
                   </tr>
                   <tr>
                      <th>Mayor's Permit</th>
-                     <td><?php echo !empty($company['permit_name']) ? $company['permit_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
-                     <td class="d-flex justify-content-center align-items-center">
-                        <?php if (!empty($company['permit'])): ?>
-                           <a href="upload_file/PERMIT/<?php echo $company['permit']; ?>" target="_blank">
-                              <button class="btn btn-sm bg-primary text-white">
-                                 <i class="fas fa-eye mr-1"></i> View
-                              </button>
-                           </a>
-                        <?php endif; ?>
-                     </td>
+                     <td id="companyDetails_permit"></td>
+                     <td id="companyDetails_permit_btn" class="d-flex justify-content-center align-items-center"></td>
                   </tr>
                   <tr>
                      <th>Sample Invoice</th>
-                     <td><?php echo !empty($company['invoice_name']) ? $company['invoice_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
-                     <td class="d-flex justify-content-center align-items-center">
-                        <?php if (!empty($company['invoice'])): ?>
-                           <a href="upload_file/INVOICE/<?php echo $company['invoice']; ?>" target="_blank">
-                              <button class="btn btn-sm bg-primary text-white">
-                                 <i class="fas fa-eye mr-1"></i> View
-                              </button>
-                           </a>
-                        <?php endif; ?>
-                     </td>
+                     <td id="companyDetails_invoice"></td>
+                     <td id="companyDetails_invoice_btn" class="d-flex justify-content-center align-items-center"></td>
                   </tr>
                   <tr>
                      <th>Certification</th>
-                     <td><?php echo !empty($company['certification_name']) ? $company['certification_name'] : "<i class='text-danger'>No file uploaded</i>"; ?></td>
-                     <td class="d-flex justify-content-center align-items-center">
-                        <?php if (!empty($company['certification'])): ?>
-                           <a href="upload_file/CERTIFICATION/<?php echo $company['certification']; ?>" target="_blank">
-                              <button class="btn btn-sm bg-primary text-white">
-                                 <i class="fas fa-eye mr-1"></i> View
-                              </button>
-                           </a>
-                        <?php endif; ?>
-                     </td>
+                     <td id="companyDetails_certification"></td>
+                     <td id="companyDetails_certification_btn" class="d-flex justify-content-center align-items-center"></td>
                   </tr>
                </table>
             </div>
          </div>
 
          <div class="modal-footer">
-            <button type="button" class="btn btn-danger float-right mr-2" onclick="deleteCompany('<?php echo $company['id']; ?>')">
+            <button type="button" class="btn btn-danger float-right mr-2" id="deleteCompany_btn">
                <i class="fa fa-trash pr-1"></i> Delete
             </button>
 
-            <button type="button" class="btn btn-warning float-right mr-2" onclick="editCompany('<?php echo $company['id']; ?>', '<?php echo $company['company_name']; ?>', '<?php echo $company['company_email']; ?>', '<?php echo $company['company_address']; ?>', '<?php echo $company['contact_person']; ?>', '<?php echo $company['company_link']; ?>', '<?php echo $company['company_status']; ?>')">
+            <button type="button" class="btn btn-warning float-right mr-2" id="editCompany_btn">
                <i class="fa fa-edit pr-1"></i> Edit
             </button>
 

@@ -35,24 +35,32 @@ if (isset($_POST['action']) && $_POST['action'] == 'company_details') {
 
         $json_data = array(
             'company_id' => $company_id,
-            'company_name' => $company['company_name'],
-            'company_email' => $company['company_email'],
-            'company_address' => $company['company_address'],
-            'company_number' => $company['company_number'],
-            'contact_person' => $company['contact_person'],
-            'contact_number' => $company['contact_number'],
-            'company_link' => $company['company_link'],
+            'company_name' => html_entity_decode($company['company_name']),
+            'company_email' => !empty($company['company_email']) ? html_entity_decode($company['company_email']) : "<i class='text-danger'>No Company Email Registered</i>",
+            'company_address' => html_entity_decode($company['company_address']),
+
+            'company_number' => !empty($company['company_number']) ? getContactNumber($company['company_number']) : "<i class='text-danger'>No Company Number Registered</i>",
+            'contact_person' => html_entity_decode($company['contact_person']),
+            'contact_number' => !empty($company['contact_number']) ? getContactNumber($company['contact_number']) : "<i class='text-danger'>No Contact Number Registered</i>",
             'company_status' => getStatusValue($company['company_status']),
-            'bir' => $company['bir'],
-            'bir_name' => $company['bir_name'],
-            'dti' => $company['dti'],
-            'dti_name' => $company['dti_name'],
-            'permit' => $company['permit'],
-            'permit_name' => $company['permit_name'],
-            'invoice' => $company['invoice'],
-            'invoice_name' => $company['invoice_name'],
-            'certtification' => $company['certtification'],
-            'certtification_name' => $company['certtification_name']
+
+            'company_link' => !empty($company['company_link']) ? html_entity_decode($company['company_link']) : "<i class='text-danger'>No Link Address Registered</i>",
+            'company_link_btn' => !empty($company['company_link']) ? "<a href=" . html_entity_decode($company['company_link']) . " target='_blank'><button class='btn btn-sm bg-primary text-white'><i class='fas fa-eye mr-1'></i> View </button></a>" : "",
+
+            'bir_name' => !empty($company['bir_name']) ? $company['bir_name'] : "<i class='text-danger'>No file uploaded</i>",
+            'bir_btn' => !empty($company['bir']) ? "<a href=upload_file/BIR/" . $company['bir'] . " target='_blank'><button class='btn btn-sm bg-primary text-white'><i class='fas fa-eye mr-1'></i> View </button></a>" : "",
+
+            'dti_name' => !empty($company['dti_name']) ? $company['dti_name'] : "<i class='text-danger'>No file uploaded</i>",
+            'dti_btn' => !empty($company['dti']) ? "<a href=upload_file/DTI/" . $company['dti'] . " target='_blank'><button class='btn btn-sm bg-primary text-white'><i class='fas fa-eye mr-1'></i> View </button></a>" : "",
+
+            'permit_name' => !empty($company['permit_name']) ? $company['permit_name'] : "<i class='text-danger'>No file uploaded</i>",
+            'permit_btn' => !empty($company['permit']) ? "<a href=upload_file/PERMIT/" . $company['permit'] . " target='_blank'><button class='btn btn-sm bg-primary text-white'><i class='fas fa-eye mr-1'></i> View </button></a>" : "",
+
+            'invoice_name' => !empty($company['invoice_name']) ? $company['invoice_name'] : "<i class='text-danger'>No file uploaded</i>",
+            'invoice_btn' => !empty($company['invoice']) ? "<a href=upload_file/INVOICE/" . $company['invoice'] . " target='_blank'><button class='btn btn-sm bg-primary text-white'><i class='fas fa-eye mr-1'></i> View </button></a>" : "",
+
+            'certification_name' => !empty($company['certification_name']) ? $company['certification_name'] : "<i class='text-danger'>No file uploaded</i>",
+            'certification_btn' => !empty($company['certification']) ? "<a href=upload_file/CERTIFICATION/" . $company['certification'] . " target='_blank'><button class='btn btn-sm bg-primary text-white'><i class='fas fa-eye mr-1'></i> View </button></a>" : ""
         );
     }
     echo json_encode($json_data);
