@@ -26,8 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
          if (isset($_FILES['item_image']) && $_FILES['item_image']['error'] == 0) {
 
-            $item_name = $_FILES["item_sheet"]["name"];
-
             $item_file_name = $inserted_id . '_ITEM.' . pathinfo($_FILES["item_image"]["name"], PATHINFO_EXTENSION);
             $item_old_path = $_FILES["item_image"]["tmp_name"];
             $item_new_path = 'upload_file/PICTURE/' . $item_file_name;
@@ -57,6 +55,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       ob_end_flush();
       exit;
    }
+
+   // Delete item .................................................................................
+   if (isset($_POST['delete_item'])) {
+      $id = $_POST['id'];
+      $result = mysqli_query($db_conn, "DELETE FROM tbl_items WHERE id='$id' ");
+
+      if ($result) {
+         $_SESSION["message"] = "Item deleted successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to item item.";
+      }
+
+      header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+      ob_end_flush();
+      exit;
+   }
+
+   // Edit item ...................................................................................
+   if (isset($_POST['edit_item'])) {
+      $edit_item_id = $_POST['edit_item_id'];
+      $edit_item_name = filter_input(INPUT_POST, 'edit_item_name', FILTER_SANITIZE_SPECIAL_CHARS);
+      $edit_item_brand = filter_input(INPUT_POST, 'edit_item_brand', FILTER_SANITIZE_SPECIAL_CHARS);
+      $edit_item_specification = filter_input(INPUT_POST, 'edit_item_specification', FILTER_SANITIZE_SPECIAL_CHARS);
+      $edit_item_status = $_POST['edit_item_status'];
+
+      $result = mysqli_query($db_conn, "UPDATE tbl_items SET item_name='$edit_item_name', item_brand='$edit_item_brand', item_specification='$edit_item_specification', item_status='$edit_item_status' WHERE id='$edit_item_id'");
+
+      if ($result) {
+
+         if (isset($_FILES['edit_item_image']) && $_FILES['edit_item_image']['error'] == 0) {
+
+            $edit_item_file_name = $edit_item_id . '_ITEM.' . pathinfo($_FILES["edit_item_image"]["name"], PATHINFO_EXTENSION);
+            $edit_item_old_path = $_FILES["edit_item_image"]["tmp_name"];
+            $edit_item_new_path = 'upload_file/PICTURE/' . $edit_item_file_name;
+            move_uploaded_file($edit_item_old_path, $edit_item_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_items SET item_image = '$edit_item_file_name' WHERE id = '$edit_item_id'");
+         }
+
+         if (isset($_FILES['edit_item_sheet']) && $_FILES['edit_item_sheet']['error'] == 0) {
+
+            $edit_sheet_name = $_FILES["edit_item_sheet"]["name"];
+
+            $edit_sheet_file_name = $edit_item_id . '_DATASHEET.pdf';
+            $edit_sheet_old_path = $_FILES["edit_item_sheet"]["tmp_name"];
+            $edit_sheet_new_path = 'upload_file/DATASHEET/' . $edit_sheet_file_name;
+            move_uploaded_file($edit_sheet_old_path, $edit_sheet_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_items SET item_datasheet = '$edit_sheet_file_name', item_dataname = '$edit_sheet_name' WHERE id = '$edit_item_id'");
+         }
+
+         $_SESSION["message"] = "Item Registered successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to register item.";
+      }
+
+      header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+      ob_end_flush();
+      exit;
+   }
 }
 
 ?>
@@ -66,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    <div class="card shadow mb-4">
       <div class="card-header py-3.5 pt-4">
          <h4 class="float-left">Item List</h4>
-         <button type="button" class="btn btn-primary float-right" onclick="resetForm_item();">
+         <button type="button" class="btn btn-primary float-right" onclick="resetForm();">
             <i class="fa fa-plus pr-1"></i> Add Item
          </button>
       </div>
@@ -98,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                            <td><?php echo !empty($row["item_brand"]) ? $row["item_brand"] : "" ?></td>
                            <td><?php echo isset($row["item_status"]) ? getStatusValue($row["item_status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
-                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editItem()" disabled>
+                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="viewItemDetails('<?php echo $row['id']; ?>')">
                                  <i class="fas fa-eye"></i> View
                               </button>
                            </td>
@@ -126,8 +184,66 @@ include('../includes/footer.php');
       $('#itemTable').DataTable();
    });
 
-   function resetForm_item() {
-
+   function resetForm() {
       $('#registerAccountModal').modal('show');
+   }
+
+   function viewItemDetails(item_id) {
+      $.ajax({
+         url: '../includes/ajax.php',
+         type: 'POST',
+         data: {
+            action: 'item_details',
+            item_id: item_id
+         },
+         dataType: 'json',
+         success: function(response) {
+            $('#itemDetails_image').attr('src', response.item_image);
+            $('#itemDetails_name').text(response.item_name);
+            $('#itemDetails_brand').html(response.item_brand);
+            $('#itemDetails_specification').html(response.item_specification);
+
+            $('#itemDetails_sheet').html(response.item_dataname);
+            $('#itemDetails_sheet_btn').html(response.item_datasheet);
+
+            $('#itemDetails_status').html(response.item_status);
+
+            $('#deleteItem_btn').attr('onclick', "deleteItem('" + response.item_id + "')");
+
+            $('#editItem_btn').attr("onclick",
+               "editItem(" +
+               JSON.stringify(response.item_id) + ", " +
+               JSON.stringify(response.item_name) + ", " +
+               JSON.stringify(response.item_brand_edit) + ", " +
+               JSON.stringify(response.item_specification_edit) + ", " +
+               JSON.stringify(response.item_status_edit) +
+               ")"
+            );
+
+            $('#viewItemModal').modal('show');
+         },
+         error: function(xhr, status, error) {
+            console.error("AJAX Error:");
+            console.error("Response Text: " + xhr.responseText);
+         }
+      });
+   }
+
+   function deleteItem(id) {
+      $('#delete_item_id').val(id);
+      $('#viewItemModal').modal('hide');
+      $('#deleteItemModal').modal('show');
+   }
+
+   function editItem(id, name, brand, specification, status) {
+
+      $('#edit_item_id').val(id);
+      $('#edit_item_name').val(name);
+      $('#edit_item_brand').val(brand);
+      $('#edit_item_specification').html(specification);
+      $('#edit_itemstatus').val(status).text(status == 1 ? "Active" : "Inactive");
+
+      $('#viewItemModal').modal('hide');
+      $('#editItemModal').modal('show');
    }
 </script>

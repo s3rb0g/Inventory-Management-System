@@ -252,7 +252,7 @@
                         </div>
                         <div id="companyNumberList">
                            <div class="d-flex align-items-stretch mb-2">
-                              <input type="number" name="company_number[]" class="form-control">
+                              <input type="number" name="company_number[]" id="company_number" class="form-control">
                               <button type="button" class="btn btn-danger btn-sm ml-2 mt-1" style="height: 30px;" onclick="removeCompanyNumber(this)">
                                  <i class="fa fa-times" aria-hidden="true"></i>
                               </button>
@@ -278,7 +278,7 @@
                         </div>
                         <div id="contactNumberList">
                            <div class="d-flex align-items-stretch mb-2">
-                              <input type="number" name="contact_number[]" class="form-control" required>
+                              <input type="number" name="contact_number[]" id="contact_number" class="form-control" required>
                               <button type="button" class="btn btn-danger btn-sm ml-2 mt-1" style="height: 30px;" onclick="removeContactNumber(this)">
                                  <i class="fa fa-times" aria-hidden="true"></i>
                               </button>
@@ -353,7 +353,7 @@
 
 <!-- View Company Modal -->
 <div class="modal fade" id="viewCompanyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-xl modal-dialog-scrollable">
+   <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
          <div class="modal-header bg-primary text-white">
             <h5 class="modal-title" id="exampleModalLabel">Company Details</h5>
@@ -363,7 +363,7 @@
          </div>
 
          <div class="modal-body">
-            <div class="table-responsive table-bordered table-striped table-hover">
+            <div class="table-responsive table-striped table-hover">
                <table class="table table-bordered">
                   <tr>
                      <th class="col-3">Name</th>
@@ -458,7 +458,7 @@
    <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Company</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Edit Company Details</h5>
             <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="true">x</span>
             </button>
@@ -494,19 +494,10 @@
                   <div class="col-md-6">
                      <div class="mb-3 Company-number-container">
                         <div class="d-flex align-items-center mb-2">
-                           <label for="company_number" class="form-label">Number</label>
-                           <button type="button" class="btn btn-primary btn-sm ml-auto" onclick="addCompanyNumber()">Add</button>
+                           <label for="edit_company_number" class="form-label">Number</label>
+                           <button type="button" class="btn btn-primary btn-sm ml-auto" onclick="edit_addCompanyNumber()">Add</button>
                         </div>
-                        <div class="mb-3 Contact-number-container" id="edit_companyNumberList">
-                           <?php foreach ($company_number as $index => $number): ?>
-                              <div class="d-flex align-items-stretch mb-2">
-                                 <input type="number" name="edit_company_number[]" class="form-control" value="<?php echo htmlspecialchars($number); ?>">
-                                 <button type="button" class="btn btn-danger btn-sm ml-2 mt-1" style="height: 30px;" onclick="removeCompanyNumber(this)">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                 </button>
-                              </div>
-                           <?php endforeach; ?>
-                        </div>
+                        <div class="mb-3 Contact-number-container" id="edit_companyNumberList"></div>
                      </div>
                   </div>
                </div>
@@ -523,18 +514,9 @@
                      <div class="mb-3 Contact-number-container">
                         <div class="d-flex align-items-center mb-2">
                            <label for="edit_contact_number" class="form-label">Contact Number <span style="color: red;">*</span></label>
-                           <button type="button" class="btn btn-primary btn-sm ml-auto" onclick="addContactNumber()">Add</button>
+                           <button type="button" class="btn btn-primary btn-sm ml-auto" onclick="edit_addContactNumber()">Add</button>
                         </div>
-                        <div class="mb-3 Contact-number-container" id="edit_contactNumberList">
-                           <?php foreach ($contact_number as $index => $number): ?>
-                              <div class="d-flex align-items-stretch mb-2">
-                                 <input type="number" name="edit_contact_number[]" class="form-control" value="<?php echo htmlspecialchars($number); ?>" required>
-                                 <button type="button" class="btn btn-danger btn-sm ml-2 mt-1" style="height: 30px;" onclick="removeContactNumber(this)">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                 </button>
-                              </div>
-                           <?php endforeach; ?>
-                        </div>
+                        <div class="mb-3 Contact-number-container" id="edit_contactNumberList"></div>
                      </div>
                   </div>
                </div>
@@ -615,14 +597,14 @@
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header bg-danger">
-            <h5 class="modal-title text-white">Delete an Account</h5>
+            <h5 class="modal-title text-white">Delete Company Record</h5>
             <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                <span aria-hidden="true">&times;</span>
             </button>
          </div>
 
          <div class="modal-body">
-            <p class="h5">Are you sure you want to delete this company permanently?</p>
+            <p class="h5">Are you sure you want to delete this company record permanently?</p>
          </div>
 
          <div class="modal-footer">
@@ -683,6 +665,161 @@
             </form>
          </div>
 
+      </div>
+   </div>
+</div>
+
+<!-- View Item Modal -->
+<div class="modal fade" id="viewItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+         <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Item Details</h5>
+            <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">x</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <div class="table-responsive table-striped table-hover">
+               <table class="table table-bordered">
+                  <tr>
+                     <th class="col-3">Item Image</th>
+                     <td class="col-7">
+                        <img src="../assets/img/Not_Available.png" style="height: 150px; width: 150px;" alt="No Image Available" id="itemDetails_image">
+                     </td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <th>Name</th>
+                     <td id="itemDetails_name"></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <th>Brand</th>
+                     <td id="itemDetails_brand"></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <th>Specification</th>
+                     <td id="itemDetails_specification"></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <th>Data Sheet</th>
+                     <td id="itemDetails_sheet"></td>
+                     <td id="itemDetails_sheet_btn" class="d-flex justify-content-center align-items-center"></td>
+                  </tr>
+                  <tr>
+                     <th>Status</th>
+                     <td id="itemDetails_status"></td>
+                     <td></td>
+                  </tr>
+               </table>
+            </div>
+         </div>
+
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger float-right mr-2" id="deleteItem_btn">
+               <i class="fa fa-trash pr-1"></i> Delete
+            </button>
+
+            <button type="button" class="btn btn-warning float-right mr-2" id="editItem_btn">
+               <i class="fa fa-edit pr-1"></i> Edit
+            </button>
+
+            <button type="button" class="btn btn-secondary float-right mr-2" data-dismiss="modal">
+               <i class="fa fa-chevron-left pr-1"></i> Close
+            </button>
+
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<!-- Edit Item Modal -->
+<div class="modal fade" id="editItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+         <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Item Details</h5>
+            <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">x</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
+               <input type="hidden" name="edit_item_id" id="edit_item_id">
+
+               <div class="mb-3">
+                  <label for="edit_item_name" class="form-label">Item Name <span style="color: red;">*</span></label>
+                  <input type="text" name="edit_item_name" id="edit_item_name" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_item_brand" class="form-label">Brand</label>
+                  <input type="text" name="edit_item_brand" id="edit_item_brand" class="form-control">
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_item_specification" class="form-label">Specification <span style="color: red;">*</span></label>
+                  <textarea name="edit_item_specification" id="edit_item_specification" class="form-control" rows="4" required></textarea>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_item_image" class="form-label">Image</label>
+                  <input type="file" name="edit_item_image" id="edit_item_image" class="form-control" accept=".jpg, .jpeg, .png, .webp, .svg, .gif">
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_item_sheet" class="form-label">Data Sheet</label>
+                  <input type="file" name="edit_item_sheet" id="edit_item_sheet" class="form-control" accept="application/pdf">
+               </div>
+
+               <div class="mb-2">
+                  <label for="edit_item_status" class="form-label">Status <span style="color: red;">*</span></label>
+                  <select name="edit_item_status" id="edit_item_status" class="form-control" required>
+                     <option id="edit_itemstatus" value="" hidden></option>
+                     <option value="1">Active</option>
+                     <option value="0">Inactive</option>
+                  </select>
+               </div>
+         </div>
+
+         <div class="modal-footer">
+            <input type="submit" name="edit_item" value="Save" class="btn btn-primary pr-3">
+            <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
+            </form>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<!-- Delete Item Modal -->
+<div class="modal fade" id="deleteItemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header bg-danger">
+            <h5 class="modal-title text-white">Delete Item Record</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <p class="h5">Are you sure you want to delete this item record permanently?</p>
+         </div>
+
+         <div class="modal-footer">
+            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+               <input type="hidden" name="id" value="" id="delete_item_id">
+               <input type="submit" name="delete_item" value="Confirm" class="btn btn-danger pr-3">
+               <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </form>
+         </div>
       </div>
    </div>
 </div>

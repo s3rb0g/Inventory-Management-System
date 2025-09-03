@@ -17,3 +17,4 @@
 <!-- SB Admin 2 core -->
 <script src="../assets/js/sb-admin-2.min.js"></script>
 <script src="../assets/js/navigation.js"></script>
+<script src="../assets/js/script.js"></script>
