@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                      <th style="width: 350px;">Item Name</th>
                      <th style="width: 200px;">Brand</th>
                      <th style="width: 130px;">Status</th>
-                     <th style="width: 170px;">Actions</th>
+                     <th style="width: 170px;">Action</th>
                   </tr>
                </thead>
 

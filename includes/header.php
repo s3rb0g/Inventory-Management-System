@@ -108,6 +108,15 @@ include("../includes/ajax.php");
             <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
+               <!-- <img src="../assets/img/logo.png" alt="" style="height: 50px; width: 50px;">
+               <div class="my-auto d-flex align-items-center">
+
+                  <div class="ml-2">
+                     <h3 class="mb-0">Parametric Engineering and Construction</h3>
+                     <h6 class="mt-1">"We Design Better, We Build Better"</h6>
+                  </div>
+               </div> -->
+
                <!-- Topbar Navbar -->
                <ul class="navbar-nav ml-auto">
 

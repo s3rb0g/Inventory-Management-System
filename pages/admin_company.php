@@ -227,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                      <th>Address</th>
                      <th>Contact Person</th>
                      <th>Status</th>
-                     <th style="width: 170px;">Actions</th>
+                     <th style="width: 170px;">Action</th>
                   </tr>
                </thead>
 
