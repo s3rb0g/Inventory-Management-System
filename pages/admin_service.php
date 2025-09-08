@@ -9,6 +9,45 @@ if (isset($_SESSION['user_access'])) {
 } else {
    header('location: ../index.php');
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+   // Add Service ....................................................................................
+   if (isset($_POST['add_service'])) {
+      $service_name = filter_input(INPUT_POST, 'service_name', FILTER_SANITIZE_SPECIAL_CHARS);
+      $service_company = $_POST['service_company'];
+      $service_vat = $_POST['service_vat'];
+      $service_cost = $_POST['service_cost'];
+      $service_unit = filter_input(INPUT_POST, 'service_unit', FILTER_SANITIZE_SPECIAL_CHARS);
+
+      $result = mysqli_query($db_conn, "INSERT INTO tbl_services (service_name, service_company_id, service_vat, service_cost, service_unit, service_status) VALUES ('$service_name', '$service_company', '$service_vat', '$service_cost', '$service_unit', '1')");
+
+      if ($result) {
+         $inserted_id = mysqli_insert_id($db_conn);
+
+         if (isset($_FILES['service_sheet']) && $_FILES['service_sheet']['error'] == 0) {
+
+            $sheet_name = $_FILES["service_sheet"]["name"];
+
+            $sheet_file_name = $inserted_id . '_DATASHEET.pdf';
+            $sheet_old_path = $_FILES["service_sheet"]["tmp_name"];
+            $sheet_new_path = 'upload_file/DATASHEET/SERVICES/' . $sheet_file_name;
+            move_uploaded_file($sheet_old_path, $sheet_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_services SET service_datasheet = '$sheet_file_name', service_dataname = '$sheet_name' WHERE id = '$inserted_id'");
+         }
+
+         $_SESSION["message"] = "Service Registered successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to register service.";
+      }
+
+      header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+      ob_end_flush();
+      exit;
+   }
+}
+
 ?>
 
 <!-- Begin Page Content -->
@@ -16,39 +55,45 @@ if (isset($_SESSION['user_access'])) {
    <div class="card shadow mb-4">
       <div class="card-header py-3.5 pt-4">
          <h4 class="float-left">Service List</h4>
-         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createCompanyModal" disabled>
+         <button type="button" class="btn btn-primary float-right" onclick="registerService()">
             <i class="fa fa-plus pr-1"></i> Add Service
          </button>
       </div>
 
       <div class="card-body">
          <div class="table-responsive">
-            <table class=" table table-bordered table-hover" id="serviceTable" width="100%" cellspacing="0">
+            <table class=" table table-bordered table-scollable table-hover" id="serviceTable" width="100%" cellspacing="0">
                <thead class="bg-primary text-white">
                   <tr class="text-center">
-                     <th>ID</th>
-                     <th>Name</th>
-                     <th>Company</th>
-                     <th>Price</th>
-                     <th>Status</th>
-                     <th style="width: 170px;">Actions</th>
+                     <th class="d-none">ID</th>
+                     <th style="width: 20%;">Name</th>
+                     <th style="width: 20%;">Company</th>
+                     <th style="width: 15%;">Location</th>
+                     <th style="width: 10%;">VAT</th>
+                     <th style="width: 10%;">Price</th>
+                     <th style="width: 5%;">Unit</th>
+                     <th style="width: 10%;">Status</th>
+                     <th style="width: 10%;">Actions</th>
                   </tr>
                </thead>
 
                <tbody>
 
-                  <!-- <?php
-                        $result = mysqli_query($db_conn, "SELECT * FROM tbl_companies ORDER BY id ASC");
-                        if (mysqli_num_rows($result) > 0):
-                           while ($row = mysqli_fetch_assoc($result)):
-                        ?>
+                  <?php
+                  $result = mysqli_query($db_conn, "SELECT tbl_services.*, tbl_companies.company_address FROM tbl_services INNER JOIN tbl_companies ON tbl_services.service_company_id=tbl_companies.id ORDER BY id ASC");
+                  if (mysqli_num_rows($result) > 0):
+                     while ($row = mysqli_fetch_assoc($result)):
+                  ?>
 
                         <tr>
-                           <td class="text-center"><?php echo !empty($row["id"]) ? $row["id"] : "" ?></td>
-                           <td><?php echo !empty($row["company_name"]) ? $row["company_name"] : "" ?></td>
+                           <td class="d-none"><?php echo !empty($row["id"]) ? $row["id"] : "" ?></td>
+                           <td><?php echo !empty($row["service_name"]) ? $row["service_name"] : "" ?></td>
+                           <td><?php echo !empty($row["service_company_id"]) ? getCompanyName($row["service_company_id"]) : "" ?></td>
                            <td><?php echo !empty($row["company_address"]) ? $row["company_address"] : "" ?></td>
-                           <td><?php echo !empty($row["contact_person"]) ? $row["contact_person"] : "" ?></td>
-                           <td><?php echo isset($row["company_status"]) ? getStatusValue($row["company_status"]) : "" ?></td>
+                           <td><?php echo isset($row["service_vat"]) ? getVatValue($row["service_vat"]) : "" ?></td>
+                           <td><?php echo !empty($row["service_cost"]) ? ('₱ ' . $row["service_cost"]) : "" ?></td>
+                           <td><?php echo !empty($row["service_unit"]) ? $row["service_unit"] : "" ?></td>
+                           <td><?php echo isset($row["service_status"]) ? getStatusValue($row["service_status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
                               <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount()" disabled>
                                  <i class="fas fa-eye"></i> View
@@ -57,9 +102,9 @@ if (isset($_SESSION['user_access'])) {
                         </tr>
 
                   <?php
-                           endwhile;
-                        endif;
-                  ?> -->
+                     endwhile;
+                  endif;
+                  ?>
 
                </tbody>
             </table>
@@ -77,4 +122,8 @@ include('../includes/footer.php');
    $(document).ready(function() {
       $('#serviceTable').DataTable();
    });
+
+   function registerService() {
+      $('#registerServiceModal').modal('show');
+   }
 </script>

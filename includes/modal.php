@@ -825,7 +825,7 @@
 </div>
 
 <!-- Register Material Modal -->
-<div class="modal fade" id="registermaterialModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="registerMaterialModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-dialog-scrollable" role="document">
       <div class="modal-content">
          <div class="modal-header bg-primary text-white">
@@ -904,6 +904,85 @@
 
          <div class="modal-footer">
             <input type="submit" name="add_material" value="Save" class="btn btn-primary pr-3">
+            <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
+            </form>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+
+
+
+<!-- Register Service Modal -->
+<div class="modal fade" id="registerServiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+         <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Register Services</h5>
+            <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">x</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
+
+               <div class="mb-3">
+                  <label for="service_name" class="form-label">Service <span style="color: red;">*</span></label>
+                  <input type="text" name="service_name" id="service_name" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="service_company" class="form-label">Company <span style="color: red;">*</span></label>
+                  <select name="service_company" id="service_company" class="form-control" required>
+                     <option hidden></option>
+
+                     <?php
+                     $result = mysqli_query($db_conn, "SELECT * FROM tbl_companies WHERE company_status=1");
+                     if ($result):
+                        $i = 0;
+                        while ($row = mysqli_fetch_assoc($result)):
+                           $color = ($i % 2 == 0) ? "#ffffffff" : "#d1cbcbff";
+                     ?>
+                           <option value="<?php echo $row['id'] ?>" style="background-color: <?php echo $color; ?>;"><?php echo $row['company_name'] ?></option>
+                     <?php
+                           $i++;
+                        endwhile;
+                     endif;
+                     ?>
+
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <label for="service_vat" class="form-label">VAT <span style="color: red;">*</span></label>
+                  <select name="service_vat" id="service_vat" class="form-control" required>
+                     <option hidden></option>
+                     <option value="1">VAT IN</option>
+                     <option value="0">VAT EX</option>
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <label for="service_cost" class="form-label">Cost <span style="color: red;">*</span></label>
+                  <input type="number" name="service_cost" id="service_cost" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="service_unit" class="form-label">Unit <span style="color: red;">*</span></label>
+                  <input type="text" name="service_unit" id="service_unit" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="service_sheet" class="form-label">Data Sheet</label>
+                  <input type="file" name="service_sheet" id="service_sheet" class="form-control" accept="application/pdf">
+               </div>
+         </div>
+
+         <div class="modal-footer">
+            <input type="submit" name="add_service" value="Save" class="btn btn-primary pr-3">
             <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
             </form>
          </div>

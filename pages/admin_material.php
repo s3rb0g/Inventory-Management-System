@@ -66,19 +66,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                <tbody>
 
                   <?php
-                  $result = mysqli_query($db_conn, "SELECT * FROM tbl_materials ORDER BY id ASC");
+                  $result = mysqli_query($db_conn, "SELECT tbl_materials.*, tbl_companies.company_address FROM tbl_materials INNER JOIN tbl_companies ON tbl_materials.material_company_id=tbl_companies.id ORDER BY id ASC");
                   if (mysqli_num_rows($result) > 0):
                      while ($row = mysqli_fetch_assoc($result)):
                   ?>
 
                         <tr>
                            <td class="d-none"><?php echo !empty($row["id"]) ? $row["id"] : "" ?></td>
-                           <td><?php echo !empty($row["material_item_id"]) ? $row["material_item_id"] : "" ?></td>
-                           <td><?php echo !empty($row["material_company_id"]) ? $row["material_company_id"] : "" ?></td>
-                           <!-- <td><?php echo !empty($row["id"]) ? $row["id"] : "" ?></td> -->
-                           <td>asdasda</td>
-                           <td><?php echo isset($row["material_vat"]) ? $row["material_vat"] : "" ?></td>
-                           <td><?php echo !empty($row["material_cost"]) ? $row["material_cost"] : "" ?></td>
+                           <td><?php echo !empty($row["material_item_id"]) ? getItemName($row["material_item_id"]) : "" ?></td>
+                           <td><?php echo !empty($row["material_company_id"]) ? getCompanyName($row["material_company_id"]) : "" ?></td>
+                           <td><?php echo !empty($row["company_address"]) ? $row["company_address"] : "" ?></td>
+                           <td><?php echo isset($row["material_vat"]) ? getVatValue($row["material_vat"]) : "" ?></td>
+                           <td><?php echo !empty($row["material_cost"]) ? ('₱ ' . $row["material_cost"]) : "" ?></td>
                            <td><?php echo !empty($row["material_unit"]) ? $row["material_unit"] : "" ?></td>
                            <td><?php echo isset($row["material_status"]) ? getStatusValue($row["material_status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
@@ -111,6 +110,6 @@ include('../includes/footer.php');
    });
 
    function registerMaterial() {
-      $('#registermaterialModal').modal('show');
+      $('#registerMaterialModal').modal('show');
    }
 </script>

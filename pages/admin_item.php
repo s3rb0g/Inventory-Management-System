@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $sheet_file_name = $inserted_id . '_DATASHEET.pdf';
             $sheet_old_path = $_FILES["item_sheet"]["tmp_name"];
-            $sheet_new_path = 'upload_file/DATASHEET/' . $sheet_file_name;
+            $sheet_new_path = 'upload_file/DATASHEET/ITEMS/' . $sheet_file_name;
             move_uploaded_file($sheet_old_path, $sheet_new_path);
 
             mysqli_query($db_conn, "UPDATE tbl_items SET item_datasheet = '$sheet_file_name', item_dataname = '$sheet_name' WHERE id = '$inserted_id'");

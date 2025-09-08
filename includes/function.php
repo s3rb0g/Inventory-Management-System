@@ -1,10 +1,9 @@
 <?php
 include("../includes/auth.php");
 
-function getFullname()
+function getFullname($user_id)
 {
    global $db_conn;
-   $user_id = $_SESSION['user_id'];
    $result = mysqli_query($db_conn, "SELECT * FROM tbl_accounts WHERE id = '$user_id'");
 
    if (mysqli_num_rows($result) > 0) {
@@ -18,24 +17,24 @@ function getFullname()
    return "Unknown User";
 }
 
-function getAccessValue($id)
+function getAccessValue($access)
 {
-   if ($id == 1) {
+   if ($access == 1) {
       return "Admin";
-   } elseif ($id == 2) {
+   } elseif ($access == 2) {
       return "Editor";
-   } elseif ($id == 3) {
+   } elseif ($access == 3) {
       return "Viewer";
    } else {
       return "Unknown Access";
    }
 }
 
-function getStatusValue($id)
+function getStatusValue($status)
 {
-   if ($id == 0) {
+   if ($status == 0) {
       return "Inactive";
-   } elseif ($id == 1) {
+   } elseif ($status == 1) {
       return "Active";
    } else {
       return "Unknown Access";
@@ -50,6 +49,45 @@ function getContactNumber($contact_number)
    foreach ($array_number as $index => $number) {
       $string_number .= $number . "<br>";
    }
-               
+
    return $string_number;
+}
+
+function getItemName($item_id)
+{
+   global $db_conn;
+   $result = mysqli_query($db_conn, "SELECT item_name FROM tbl_items WHERE id = '$item_id'");
+
+   if (mysqli_num_rows($result) > 0) {
+      $row = mysqli_fetch_assoc($result);
+      $item_name = $row['item_name'];
+
+      return $item_name;
+   }
+   return "Unknown User";
+}
+
+function getCompanyName($company_id)
+{
+   global $db_conn;
+   $result = mysqli_query($db_conn, "SELECT company_name FROM tbl_companies WHERE id = '$company_id'");
+
+   if (mysqli_num_rows($result) > 0) {
+      $row = mysqli_fetch_assoc($result);
+      $company_name = $row['company_name'];
+
+      return $company_name;
+   }
+   return "Unknown User";
+}
+
+function getVatValue($vat)
+{
+   if ($vat == 0) {
+      return "VAT EX";
+   } elseif ($vat == 1) {
+      return "VAT IN";
+   } else {
+      return "Unknown Access";
+   }
 }
