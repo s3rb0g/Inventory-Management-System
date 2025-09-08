@@ -15,16 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    // Add Material ....................................................................................
    if (isset($_POST['add_material'])) {
       $material_item = $_POST['material_item'];
-      $material_company = $_POST['material_item'];
-      $material_vat = $_POST['material_item'];
-      $material_cost = $_POST['material_item'];
+      $material_company = $_POST['material_company'];
+      $material_vat = $_POST['material_vat'];
+      $material_cost = $_POST['material_cost'];
       $material_unit = filter_input(INPUT_POST, 'material_unit', FILTER_SANITIZE_SPECIAL_CHARS);
 
+      $result = mysqli_query($db_conn, "INSERT INTO tbl_materials (material_item_id, material_company_id, material_vat, material_cost, material_unit, material_status) VALUES ('$material_item', '$material_company', '$material_vat', '$material_cost', '$material_unit', '1')");
 
-      //  $_SESSION["message"] = "Item Registered successfully.";
-      // } else {
-      //    $_SESSION["message"] = "Failed to register item.";
-      // }
+      if ($result) {
+         $_SESSION["message"] = "Material Registered successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to register material.";
+      }
 
       header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
       ob_end_flush();
@@ -62,32 +64,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                </thead>
 
                <tbody>
-                  <td class="d-none"></td>
-                  <td>asdasd asduiasd iasud</td>
-                  <td>adieughf iuhd</td>
-                  <td>oiasdh eojf</td>
-                  <td>VAT EX</td>
-                  <td>87687 6</td>
-                  <td>pc</td>
-                  <td>Active</td>
-                  <td class="d-flex justify-content-center align-items-center">
-                     <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount()" disabled>
-                        <i class="fas fa-eye"></i> View
-                     </button>
-                  </td>
 
-                  <!-- <?php
-                        $result = mysqli_query($db_conn, "SELECT * FROM tbl_companies ORDER BY id ASC");
-                        if (mysqli_num_rows($result) > 0):
-                           while ($row = mysqli_fetch_assoc($result)):
-                        ?>
+                  <?php
+                  $result = mysqli_query($db_conn, "SELECT * FROM tbl_materials ORDER BY id ASC");
+                  if (mysqli_num_rows($result) > 0):
+                     while ($row = mysqli_fetch_assoc($result)):
+                  ?>
 
                         <tr>
-                           <td class="text-center"><?php echo !empty($row["id"]) ? $row["id"] : "" ?></td>
-                           <td><?php echo !empty($row["company_name"]) ? $row["company_name"] : "" ?></td>
-                           <td><?php echo !empty($row["company_address"]) ? $row["company_address"] : "" ?></td>
-                           <td><?php echo !empty($row["contact_person"]) ? $row["contact_person"] : "" ?></td>
-                           <td><?php echo isset($row["company_status"]) ? getStatusValue($row["company_status"]) : "" ?></td>
+                           <td class="d-none"><?php echo !empty($row["id"]) ? $row["id"] : "" ?></td>
+                           <td><?php echo !empty($row["material_item_id"]) ? $row["material_item_id"] : "" ?></td>
+                           <td><?php echo !empty($row["material_company_id"]) ? $row["material_company_id"] : "" ?></td>
+                           <!-- <td><?php echo !empty($row["id"]) ? $row["id"] : "" ?></td> -->
+                           <td>asdasda</td>
+                           <td><?php echo isset($row["material_vat"]) ? $row["material_vat"] : "" ?></td>
+                           <td><?php echo !empty($row["material_cost"]) ? $row["material_cost"] : "" ?></td>
+                           <td><?php echo !empty($row["material_unit"]) ? $row["material_unit"] : "" ?></td>
+                           <td><?php echo isset($row["material_status"]) ? getStatusValue($row["material_status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
                               <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount()" disabled>
                                  <i class="fas fa-eye"></i> View
@@ -96,9 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </tr>
 
                   <?php
-                           endwhile;
-                        endif;
-                  ?> -->
+                     endwhile;
+                  endif;
+                  ?>
 
                </tbody>
             </table>
