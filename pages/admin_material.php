@@ -32,6 +32,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       ob_end_flush();
       exit;
    }
+
+   // Edit Material ....................................................................................
+   if (isset($_POST['edit_material'])) {
+      $edit_material_id = $_POST['edit_material_id'];
+      $edit_material_item = $_POST['edit_material_item'];
+      $edit_material_company = $_POST['edit_material_company'];
+      $edit_material_vat = $_POST['edit_material_vat'];
+      $edit_material_cost = $_POST['edit_material_cost'];
+      $edit_material_unit = filter_input(INPUT_POST, 'edit_material_unit', FILTER_SANITIZE_SPECIAL_CHARS);
+      $edit_material_status = $_POST['edit_material_status'];
+
+      $result = mysqli_query($db_conn, "UPDATE tbl_materials SET material_item_id='$edit_material_item', material_company_id='$edit_material_company', material_vat='$edit_material_vat', material_cost='$edit_material_cost', material_unit='$edit_material_unit', material_status='$edit_material_status' WHERE id='$edit_material_id'");
+
+      if ($result) {
+         $_SESSION["message"] = "Material Updated successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to Update material.";
+      }
+
+      header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+      ob_end_flush();
+      exit;
+   }
+
+   // Delete Material .................................................................................
+   if (isset($_POST['delete_material'])) {
+      $id = $_POST['id'];
+      $result = mysqli_query($db_conn, "DELETE FROM tbl_materials WHERE id='$id' ");
+
+      if ($result) {
+         $_SESSION["message"] = "Material deleted successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to delete material.";
+      }
+
+      header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+      ob_end_flush();
+      exit;
+   }
 }
 
 ?>
@@ -81,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                            <td><?php echo !empty($row["material_unit"]) ? $row["material_unit"] : "" ?></td>
                            <td><?php echo isset($row["material_status"]) ? getStatusValue($row["material_status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
-                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount()" disabled>
+                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="viewMaterialDetails(<?php echo $row['id']; ?>)">
                                  <i class="fas fa-eye"></i> View
                               </button>
                            </td>
@@ -111,5 +150,76 @@ include('../includes/footer.php');
 
    function registerMaterial() {
       $('#registerMaterialModal').modal('show');
+   }
+
+   function viewMaterialDetails(material_id) {
+      $.ajax({
+         type: "POST",
+         url: "../includes/ajax.php",
+         data: {
+            action: 'material_details',
+            material_id: material_id
+         },
+         dataType: "json",
+         success: function(response) {
+            $('#materialDetails_image').attr('src', response.material_image);
+            $('#materialDetails_name').text(response.material_item);
+            $('#materialDetails_company').text(response.material_company);
+            $('#materialDetails_location').text(response.material_address);
+            $('#materialDetails_brand').html(response.material_brand);
+            $('#materialDetails_specification').text(response.material_specification);
+            $('#materialDetails_vat').text(response.material_vat);
+            $('#materialDetails_price').text('₱ ' + response.material_cost);
+            $('#materialDetails_unit').text(response.material_unit);
+            $('#materialDetails_contact_person').text(response.material_person);
+            $('#materialDetails_contact_number').html(response.material_number);
+
+            $('#deleteMaterial_btn').attr('onclick', "deleteMaterial('" + response.material_id + "')");
+
+            $("#editMaterial_btn").attr("onclick",
+               "editMaterial(" +
+               JSON.stringify(response.material_id) + ", " +
+               JSON.stringify(response.material_item_edit) + ", " +
+               JSON.stringify(response.material_item) + ", " +
+
+               JSON.stringify(response.material_company_edit) + ", " +
+               JSON.stringify(response.material_company) + ", " +
+
+               JSON.stringify(response.material_vat_edit) + ", " +
+               JSON.stringify(response.material_vat) + ", " +
+
+               JSON.stringify(response.material_cost) + ", " +
+               JSON.stringify(response.material_unit) + ", " +
+               JSON.stringify(response.material_status_edit) +
+               ")"
+
+            );
+
+            $('#viewMaterialModal').modal('show');
+         },
+         error: function(xhr, status, error) {
+            console.error("AJAX Error:");
+            console.error("Response Text: " + xhr.responseText);
+         }
+      })
+   }
+
+   function editMaterial(id, itemId, itemName, companyId, companyName, vatId, vatName, cost, unit, status) {
+      $('#edit_material_id').val(id);
+      $('#edit_material_item_option').val(itemId).text(itemName);
+      $('#edit_material_company_option').val(companyId).text(companyName);
+      $('#edit_material_vat_option').val(vatId).text(vatName);
+      $('#edit_material_cost').val(cost);
+      $('#edit_material_unit').val(unit);
+      $('#edit_material_status_option').val(status).text(status == 1 ? "Active" : "Inactive");
+
+      $('#viewMaterialModal').modal('hide');
+      $('#editMaterialModal').modal('show');
+   }
+
+   function deleteMaterial(id) {
+      $('#delete_material_id').val(id);
+      $('#viewMaterialModal').modal('hide');
+      $('#deleteMaterialModal').modal('show');
    }
 </script>

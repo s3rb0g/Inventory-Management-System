@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       if ($result) {
          $_SESSION["message"] = "Item deleted successfully.";
       } else {
-         $_SESSION["message"] = "Failed to item item.";
+         $_SESSION["message"] = "Failed to delete item.";
       }
 
       header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);

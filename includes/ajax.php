@@ -99,3 +99,34 @@ if (isset($_POST['action']) && $_POST['action'] == 'item_details') {
     }
     echo json_encode($json_data);
 }
+
+// ===== Fetch Material details ===== //
+if (isset($_POST['action']) && $_POST['action'] == 'material_details') {
+    $material_id = $_POST['material_id'];
+
+    $result = mysqli_query($db_conn, "SELECT * FROM tbl_materials INNER JOIN tbl_items ON tbl_materials.material_item_id=tbl_items.id INNER JOIN tbl_companies ON tbl_materials.material_company_id=tbl_companies.id WHERE tbl_materials.id='$material_id' LIMIT 1");
+    if (mysqli_num_rows($result) > 0) {
+        $material = mysqli_fetch_assoc($result);
+
+        $json_data = array(
+            'material_id' => $material_id,
+            'material_image' => !empty($material['item_image']) ? "upload_file/PICTURE/" . $material['item_image'] : "../assets/img/Not_Available.png",
+            'material_item' => html_entity_decode($material['item_name']),
+            'material_company' => html_entity_decode($material['company_name']),
+            'material_address' => html_entity_decode($material['company_address']),
+            'material_brand' => !empty($material['item_brand']) ? html_entity_decode($material['item_brand']) : "<i class='text-danger'>No Brand Registered</i>",
+            'material_specification' => nl2br(html_entity_decode($material['item_specification'])),
+            'material_vat' => getVatValue($material['material_vat']),
+            'material_cost' => $material['material_cost'],
+            'material_unit' => html_entity_decode($material['material_unit']),
+            'material_person' => html_entity_decode($material['contact_person']),
+            'material_number' => getContactNumber($material['contact_number']),
+
+            'material_item_edit' => html_entity_decode($material['material_item_id']),
+            'material_company_edit' => html_entity_decode($material['material_company_id']),
+            'material_vat_edit' => $material['material_vat'],
+            'material_status_edit' => $material['material_status']
+        );
+    }
+    echo json_encode($json_data);
+}

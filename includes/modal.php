@@ -912,6 +912,230 @@
    </div>
 </div>
 
+<!-- View Material Modal -->
+<div class="modal fade" id="viewMaterialModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-xl modal-dialog-scrollable">
+      <div class="modal-content">
+         <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Material Details</h5>
+            <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">x</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <div class="card shadow mb-4">
+               <div class="card-body card-outline-primary">
+                  <div class="row">
+                     <div class="col-md-5">
+                        <div class="mb-3">
+                           <img src="../assets/img/Not_Available.png" class="img-fluid rounded" style="max-width: auto; height: 455px; object-fit: contain;" alt="No Image Available" id="materialDetails_image">
+                        </div>
+                     </div>
+                     <div class="col-md-7">
+                        <div class="mb-3">
+                           <table class="table table-borderless table-striped">
+                              <tr>
+                                 <th style="width: 25%;">Name:</th>
+                                 <td id="materialDetails_name"></td>
+                              </tr>
+                              <tr>
+                                 <th>Company:</th>
+                                 <td id="materialDetails_company"></td>
+                              </tr>
+                              <tr>
+                                 <th>Location:</th>
+                                 <td id="materialDetails_location"></td>
+                              </tr>
+                              <tr>
+                                 <th>Brand:</th>
+                                 <td id="materialDetails_brand"></td>
+                              </tr>
+                              <tr>
+                                 <th>Specification:</th>
+                                 <td id="materialDetails_specification"></td>
+                              </tr>
+                              <tr>
+                                 <th>VAT:</th>
+                                 <td id="materialDetails_vat"></td>
+                              </tr>
+                              <tr>
+                                 <th>Price:</th>
+                                 <td id="materialDetails_price"></td>
+                              </tr>
+                              <tr>
+                                 <th>Unit:</th>
+                                 <td id="materialDetails_unit"></td>
+                              </tr>
+                              <tr>
+                                 <th>Contact Person:</th>
+                                 <td id="materialDetails_contact_person"></td>
+                              </tr>
+                              <tr>
+                                 <th>Contact Number:</th>
+                                 <td id="materialDetails_contact_number"></td>
+                              </tr>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger float-right mr-2" id="deleteMaterial_btn">
+               <i class="fa fa-trash pr-1"></i> Delete
+            </button>
+
+            <button type="button" class="btn btn-warning float-right mr-2" id="editMaterial_btn">
+               <i class="fa fa-edit pr-1"></i> Edit
+            </button>
+
+            <button type="button" class="btn btn-secondary float-right mr-2" data-dismiss="modal">
+               <i class="fa fa-chevron-left pr-1"></i> Close
+            </button>
+
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<!-- Edit Material Modal -->
+<div class="modal fade" id="editMaterialModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+         <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Materials</h5>
+            <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">x</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+               <input type="hidden" name="edit_material_id" id="edit_material_id">
+
+               <div class="mb-3">
+                  <label for="edit_material_item" class="form-label">Item <span style="color: red;">*</span></label>
+                  <select name="edit_material_item" id="edit_material_item" class="form-control" required>
+                     <option id="edit_material_item_option" hidden></option>
+
+                     <?php
+                     $result = mysqli_query($db_conn, "SELECT * FROM tbl_items WHERE item_status=1");
+                     if ($result):
+                        $i = 0;
+                        while ($row = mysqli_fetch_assoc($result)):
+                           $color = ($i % 2 == 0) ? "#ffffffff" : "#d1cbcbff";
+                     ?>
+                           <option value="<?php echo $row['id'] ?>" style="background-color: <?php echo $color; ?>;"><?php echo $row['item_name'] ?></option>
+                     <?php
+                           $i++;
+                        endwhile;
+                     endif;
+                     ?>
+
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_material_company" class="form-label">Company <span style="color: red;">*</span></label>
+                  <select name="edit_material_company" id="edit_material_company" class="form-control" required>
+                     <option id="edit_material_company_option" hidden></option>
+
+                     <?php
+                     $result = mysqli_query($db_conn, "SELECT * FROM tbl_companies WHERE company_status=1");
+                     if ($result):
+                        $i = 0;
+                        while ($row = mysqli_fetch_assoc($result)):
+                           $color = ($i % 2 == 0) ? "#ffffffff" : "#d1cbcbff";
+                     ?>
+                           <option value="<?php echo $row['id'] ?>" style="background-color: <?php echo $color; ?>;"><?php echo $row['company_name'] ?></option>
+                     <?php
+                           $i++;
+                        endwhile;
+                     endif;
+                     ?>
+
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_material_vat" class="form-label">VAT <span style="color: red;">*</span></label>
+                  <select name="edit_material_vat" id="edit_material_vat" class="form-control" required>
+                     <option id="edit_material_vat_option" hidden></option>
+                     <option value="1">VAT IN</option>
+                     <option value="0">VAT EX</option>
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_material_cost" class="form-label">Cost <span style="color: red;">*</span></label>
+                  <input type="number" name="edit_material_cost" id="edit_material_cost" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_material_unit" class="form-label">Unit <span style="color: red;">*</span></label>
+                  <input type="text" name="edit_material_unit" id="edit_material_unit" class="form-control" required>
+               </div>
+
+               <div class="mb-2">
+                  <label for="edit_material_status" class="form-label">Status <span style="color: red;">*</span></label>
+                  <select name="edit_material_status" id="edit_material_status" class="form-control" required>
+                     <option id="edit_material_status_option" value="" hidden></option>
+                     <option value="1">Active</option>
+                     <option value="0">Inactive</option>
+                  </select>
+               </div>
+         </div>
+
+         <div class="modal-footer">
+            <input type="submit" name="edit_material" value="Save" class="btn btn-primary pr-3">
+            <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
+            </form>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<!-- Delete Material Modal -->
+<div class="modal fade" id="deleteMaterialModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header bg-danger">
+            <h5 class="modal-title text-white">Delete Material Record</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <p class="h5">Are you sure you want to delete this Material record permanently?</p>
+         </div>
+
+         <div class="modal-footer">
+            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+               <input type="hidden" name="id" value="" id="delete_material_id">
+               <input type="submit" name="delete_material" value="Confirm" class="btn btn-danger pr-3">
+               <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
