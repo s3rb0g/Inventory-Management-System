@@ -1,1 +1,8 @@
-node_modules
+pages/BIR/
+pages/CERTIFICATION/
+pages/DTI/
+pages/INVOICE/
+pages/PERMIT/
+pages/PICTURE/
+pages/DATASHEET/ITEMS/
+pages/DATASHEET/SERVICES/
