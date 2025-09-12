@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                            <td><?php echo !empty($row["service_unit"]) ? $row["service_unit"] : "" ?></td>
                            <td><?php echo isset($row["service_status"]) ? getStatusValue($row["service_status"]) : "" ?></td>
                            <td class="d-flex justify-content-center align-items-center">
-                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editAccount()" disabled>
+                              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="viewService(<?php echo $row['id']; ?>)">
                                  <i class="fas fa-eye"></i> View
                               </button>
                            </td>
@@ -125,5 +125,56 @@ include('../includes/footer.php');
 
    function registerService() {
       $('#registerServiceModal').modal('show');
+   }
+
+   function viewService(service_id) {
+
+      $.ajax({
+         url: "../includes/ajax.php",
+         type: "POST",
+         data: {
+            action: "service_details",
+            service_id: service_id
+         },
+         dataType: "json",
+         success: function(response) {
+            $('#serviceDetails_name').text(response.material_item);
+            $('#serviceDetails_company').text(response.material_company);
+            $('#serviceDetails_location').text(response.material_address);
+            $('#serviceDetails_vat').text(response.material_vat);
+            $('#serviceDetails_price').text('₱ ' + response.material_cost);
+            $('#serviceDetails_unit').text(response.material_unit);
+            $('#serviceDetails_contact_person').text(response.material_person);
+            $('#serviceDetails_contact_number').html(response.material_number);
+
+            $('#deleteMaterial_btn').attr('onclick', "deleteMaterial('" + response.material_id + "')");
+
+            $("#editMaterial_btn").attr("onclick",
+               "editMaterial(" +
+               JSON.stringify(response.material_id) + ", " +
+               JSON.stringify(response.material_item_edit) + ", " +
+               JSON.stringify(response.material_item) + ", " +
+
+               JSON.stringify(response.material_company_edit) + ", " +
+               JSON.stringify(response.material_company) + ", " +
+
+               JSON.stringify(response.material_vat_edit) + ", " +
+               JSON.stringify(response.material_vat) + ", " +
+
+               JSON.stringify(response.material_cost) + ", " +
+               JSON.stringify(response.material_unit) + ", " +
+               JSON.stringify(response.material_status_edit) +
+               ")"
+
+            );
+
+            $('#viewServiceModal').modal('show');
+
+         },
+         error: function(xhr, status, error) {
+            console.error("AJAX Error:");
+            console.error("Response Text: " + xhr.responseText);
+         }
+      });
    }
 </script>

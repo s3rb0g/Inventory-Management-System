@@ -1126,19 +1126,6 @@
    </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- Register Service Modal -->
 <div class="modal fade" id="registerServiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -1209,6 +1196,73 @@
             <input type="submit" name="add_service" value="Save" class="btn btn-primary pr-3">
             <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
             </form>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<!-- View Service Modal -->
+<div class="modal fade" id="viewServiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md modal-dialog-scrollable">
+      <div class="modal-content">
+         <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Service Details</h5>
+            <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">x</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <table class="table table-borderless table-striped">
+               <tr>
+                  <th style="width: 33%;">Name:</th>
+                  <td id="serviceDetails_name"></td>
+               </tr>
+               <tr>
+                  <th>Company:</th>
+                  <td id="serviceDetails_company"></td>
+               </tr>
+               <tr>
+                  <th>Location:</th>
+                  <td id="serviceDetails_location"></td>
+               </tr>
+               <tr>
+                  <th>VAT:</th>
+                  <td id="serviceDetails_vat"></td>
+               </tr>
+               <tr>
+                  <th>Price:</th>
+                  <td id="serviceDetails_price"></td>
+               </tr>
+               <tr>
+                  <th>Unit:</th>
+                  <td id="serviceDetails_unit"></td>
+               </tr>
+               <tr>
+                  <th>Contact Person:</th>
+                  <td id="serviceDetails_contact_person"></td>
+               </tr>
+               <tr>
+                  <th>Contact Number:</th>
+                  <td id="serviceDetails_contact_number"></td>
+               </tr>
+            </table>
+         </div>
+
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger float-right mr-2" id="deleteMaterial_btn" disabled>
+               <i class="fa fa-trash pr-1"></i> Delete
+            </button>
+
+            <button type="button" class="btn btn-warning float-right mr-2" id="editMaterial_btn" disabled>
+               <i class="fa fa-edit pr-1"></i> Edit
+            </button>
+
+            <button type="button" class="btn btn-secondary float-right mr-2" data-dismiss="modal">
+               <i class="fa fa-chevron-left pr-1"></i> Close
+            </button>
+
          </div>
 
       </div>
