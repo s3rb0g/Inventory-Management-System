@@ -1,8 +1,8 @@
-pages/BIR/
-pages/CERTIFICATION/
-pages/DTI/
-pages/INVOICE/
-pages/PERMIT/
-pages/PICTURE/
-pages/DATASHEET/ITEMS/
-pages/DATASHEET/SERVICES/
+pages/upload_file/BIR/
+pages/upload_file/CERTIFICATION/
+pages/upload_file/DTI/
+pages/upload_file/INVOICE/
+pages/upload_file/PERMIT/
+pages/upload_file/PICTURE/
+pages/upload_file/DATASHEET/ITEMS/
+pages/upload_file/DATASHEET/SERVICES/
