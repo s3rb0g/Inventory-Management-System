@@ -46,6 +46,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       ob_end_flush();
       exit;
    }
+
+   // Edit Service ....................................................................................
+   if (isset($_POST['edit_service'])) {
+      $edit_service_id = $_POST['edit_service_id'];
+      $edit_service_name = filter_input(INPUT_POST, 'edit_service_name', FILTER_SANITIZE_SPECIAL_CHARS);
+      $edit_service_company = $_POST['edit_service_company'];
+      $edit_service_vat = $_POST['edit_service_vat'];
+      $edit_service_cost = $_POST['edit_service_cost'];
+      $edit_service_unit = filter_input(INPUT_POST, 'edit_service_unit', FILTER_SANITIZE_SPECIAL_CHARS);
+      $edit_service_status = $_POST['edit_service_status'];
+
+      $result = mysqli_query($db_conn, "UPDATE tbl_services SET service_name='$edit_service_name', service_company_id='$edit_service_company', service_vat='$edit_service_vat', service_cost='$edit_service_cost', service_unit='$edit_service_unit', service_status='$edit_service_status' WHERE id='$edit_service_id'");
+
+      if ($result) {
+
+         if (isset($_FILES['edit_service_sheet']) && $_FILES['edit_service_sheet']['error'] == 0) {
+
+            $sheet_name = $_FILES["edit_service_sheet"]["name"];
+
+            $sheet_file_name = $edit_service_id . '_DATASHEET.pdf';
+            $sheet_old_path = $_FILES["edit_service_sheet"]["tmp_name"];
+            $sheet_new_path = 'upload_file/DATASHEET/SERVICES/' . $sheet_file_name;
+            move_uploaded_file($sheet_old_path, $sheet_new_path);
+
+            mysqli_query($db_conn, "UPDATE tbl_services SET service_datasheet = '$sheet_file_name', service_dataname = '$sheet_name' WHERE id = '$edit_service_id'");
+         }
+
+         $_SESSION["message"] = "Service Registered successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to register service.";
+      }
+
+      header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+      ob_end_flush();
+      exit;
+   }
+
+   // Delete Service .................................................................................
+   if (isset($_POST['delete_service'])) {
+      $id = $_POST['id'];
+      $result = mysqli_query($db_conn, "DELETE FROM tbl_services WHERE id='$id' ");
+
+      if ($result) {
+         $_SESSION["message"] = "Service deleted successfully.";
+      } else {
+         $_SESSION["message"] = "Failed to delete service.";
+      }
+
+      header("Refresh: .3; url=" . $_SERVER['PHP_SELF']);
+      ob_end_flush();
+      exit;
+   }
 }
 
 ?>
@@ -138,34 +190,32 @@ include('../includes/footer.php');
          },
          dataType: "json",
          success: function(response) {
-            $('#serviceDetails_name').text(response.material_item);
-            $('#serviceDetails_company').text(response.material_company);
-            $('#serviceDetails_location').text(response.material_address);
-            $('#serviceDetails_vat').text(response.material_vat);
-            $('#serviceDetails_price').text('₱ ' + response.material_cost);
-            $('#serviceDetails_unit').text(response.material_unit);
-            $('#serviceDetails_contact_person').text(response.material_person);
-            $('#serviceDetails_contact_number').html(response.material_number);
+            $('#serviceDetails_name').text(response.service_name);
+            $('#serviceDetails_company').text(response.service_company);
+            $('#serviceDetails_location').text(response.service_address);
+            $('#serviceDetails_vat').text(response.service_vat);
+            $('#serviceDetails_price').text('₱ ' + response.service_cost);
+            $('#serviceDetails_unit').text(response.service_unit);
+            $('#serviceDetails_contact_person').text(response.service_person);
+            $('#serviceDetails_contact_number').html(response.service_number);
 
-            $('#deleteMaterial_btn').attr('onclick', "deleteMaterial('" + response.material_id + "')");
+            $('#deleteService_btn').attr('onclick', "deleteService('" + response.service_id + "')");
 
-            $("#editMaterial_btn").attr("onclick",
-               "editMaterial(" +
-               JSON.stringify(response.material_id) + ", " +
-               JSON.stringify(response.material_item_edit) + ", " +
-               JSON.stringify(response.material_item) + ", " +
+            $("#editService_btn").attr("onclick",
+               "editService(" +
+               JSON.stringify(response.service_id) + ", " +
+               JSON.stringify(response.service_name) + ", " +
 
-               JSON.stringify(response.material_company_edit) + ", " +
-               JSON.stringify(response.material_company) + ", " +
+               JSON.stringify(response.service_company_edit) + ", " +
+               JSON.stringify(response.service_company) + ", " +
 
-               JSON.stringify(response.material_vat_edit) + ", " +
-               JSON.stringify(response.material_vat) + ", " +
+               JSON.stringify(response.service_vat_edit) + ", " +
+               JSON.stringify(response.service_vat) + ", " +
 
-               JSON.stringify(response.material_cost) + ", " +
-               JSON.stringify(response.material_unit) + ", " +
-               JSON.stringify(response.material_status_edit) +
+               JSON.stringify(response.service_cost) + ", " +
+               JSON.stringify(response.service_unit) + ", " +
+               JSON.stringify(response.service_status_edit) +
                ")"
-
             );
 
             $('#viewServiceModal').modal('show');
@@ -176,5 +226,24 @@ include('../includes/footer.php');
             console.error("Response Text: " + xhr.responseText);
          }
       });
+   }
+
+   function editService(id, serviceName, companyId, companyName, vatId, vatName, cost, unit, status) {
+      $('#edit_service_id').val(id);
+      $('#edit_service_name').val(serviceName);
+      $('#edit_service_company_option').val(companyId).text(companyName);
+      $('#edit_service_vat_option').val(vatId).text(vatName);
+      $('#edit_service_cost').val(cost);
+      $('#edit_service_unit').val(unit);
+      $('#edit_service_status_option').val(status).text(status == 1 ? "Active" : "Inactive");
+
+      $('#viewServiceModal').modal('hide');
+      $('#editServiceModal').modal('show');
+   }
+
+   function deleteService(id) {
+      $('#delete_service_id').val(id);
+      $('#viewServiceModal').modal('hide');
+      $('#deleteServiceModal').modal('show');
    }
 </script>

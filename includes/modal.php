@@ -1251,11 +1251,11 @@
          </div>
 
          <div class="modal-footer">
-            <button type="button" class="btn btn-danger float-right mr-2" id="deleteMaterial_btn" disabled>
+            <button type="button" class="btn btn-danger float-right mr-2" id="deleteService_btn">
                <i class="fa fa-trash pr-1"></i> Delete
             </button>
 
-            <button type="button" class="btn btn-warning float-right mr-2" id="editMaterial_btn" disabled>
+            <button type="button" class="btn btn-warning float-right mr-2" id="editService_btn">
                <i class="fa fa-edit pr-1"></i> Edit
             </button>
 
@@ -1265,6 +1265,118 @@
 
          </div>
 
+      </div>
+   </div>
+</div>
+
+<!-- Edit Service Modal -->
+<div class="modal fade" id="editServiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+         <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Services</h5>
+            <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">x</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
+               <input type="hidden" name="edit_service_id" id="edit_service_id">
+
+               <div class="mb-3">
+                  <label for="edit_service_name" class="form-label">Service <span style="color: red;">*</span></label>
+                  <input type="text" name="edit_service_name" id="edit_service_name" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_service_company" class="form-label">Company <span style="color: red;">*</span></label>
+                  <select name="edit_service_company" id="edit_service_company" class="form-control" required>
+                     <option id="edit_service_company_option" hidden></option>
+
+                     <?php
+                     $result = mysqli_query($db_conn, "SELECT * FROM tbl_companies WHERE company_status=1");
+                     if ($result):
+                        $i = 0;
+                        while ($row = mysqli_fetch_assoc($result)):
+                           $color = ($i % 2 == 0) ? "#ffffffff" : "#d1cbcbff";
+                     ?>
+                           <option value="<?php echo $row['id'] ?>" style="background-color: <?php echo $color; ?>;"><?php echo $row['company_name'] ?></option>
+                     <?php
+                           $i++;
+                        endwhile;
+                     endif;
+                     ?>
+
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_service_vat" class="form-label">VAT <span style="color: red;">*</span></label>
+                  <select name="edit_service_vat" id="edit_service_vat" class="form-control" required>
+                     <option id="edit_service_vat_option" hidden></option>
+                     <option value="1">VAT IN</option>
+                     <option value="0">VAT EX</option>
+                  </select>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_service_cost" class="form-label">Cost <span style="color: red;">*</span></label>
+                  <input type="number" name="edit_service_cost" id="edit_service_cost" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_service_unit" class="form-label">Unit <span style="color: red;">*</span></label>
+                  <input type="text" name="edit_service_unit" id="edit_service_unit" class="form-control" required>
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_service_sheet" class="form-label">Data Sheet</label>
+                  <input type="file" name="edit_service_sheet" id="edit_service_sheet" class="form-control" accept="application/pdf">
+               </div>
+
+               <div class="mb-3">
+                  <label for="edit_service_status" class="form-label">Status <span style="color: red;">*</span></label>
+                  <select name="edit_service_status" id="edit_service_status" class="form-control" required>
+                     <option id="edit_service_status_option" value="" hidden></option>
+                     <option value="1">Active</option>
+                     <option value="0">Inactive</option>
+                  </select>
+               </div>
+         </div>
+
+         <div class="modal-footer">
+            <input type="submit" name="edit_service" value="Save" class="btn btn-primary pr-3">
+            <input type="reset" name="reset" value="Cancel" data-dismiss="modal" class="btn btn-secondary ml-2">
+            </form>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<!-- Delete Service Modal -->
+<div class="modal fade" id="deleteServiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header bg-danger">
+            <h5 class="modal-title text-white">Delete Service Record</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+
+         <div class="modal-body">
+            <p class="h5">Are you sure you want to delete this Service record permanently?</p>
+         </div>
+
+         <div class="modal-footer">
+            <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+               <input type="hidden" name="id" value="" id="delete_service_id">
+               <input type="submit" name="delete_service" value="Confirm" class="btn btn-danger pr-3">
+               <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </form>
+         </div>
       </div>
    </div>
 </div>

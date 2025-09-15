@@ -133,26 +133,26 @@ if (isset($_POST['action']) && $_POST['action'] == 'material_details') {
 
 // ===== Fetch Service details ===== //
 if (isset($_POST['action']) && $_POST['action'] == 'service_details') {
-    $material_id = $_POST['material_id'];
+    $service_id = $_POST['service_id'];
 
-    $result = mysqli_query($db_conn, "SELECT * FROM tbl_materials INNER JOIN tbl_items ON tbl_materials.material_item_id=tbl_items.id INNER JOIN tbl_companies ON tbl_materials.material_company_id=tbl_companies.id WHERE tbl_materials.id='$material_id' LIMIT 1");
+    $result = mysqli_query($db_conn, "SELECT * FROM tbl_services INNER JOIN tbl_companies ON tbl_services.service_company_id=tbl_companies.id WHERE tbl_services.id='$service_id' LIMIT 1");
     if (mysqli_num_rows($result) > 0) {
-        $material = mysqli_fetch_assoc($result);
+        $service = mysqli_fetch_assoc($result);
 
         $json_data = array(
-            'material_id' => $material_id,
-            'material_item' => html_entity_decode($material['item_name']),
-            'material_company' => html_entity_decode($material['company_name']),
-            'material_address' => html_entity_decode($material['company_address']),
-            'material_vat' => getVatValue($material['material_vat']),
-            'material_cost' => $material['material_cost'],
-            'material_unit' => html_entity_decode($material['material_unit']),
-            'material_person' => html_entity_decode($material['contact_person']),
-            'material_number' => getContactNumber($material['contact_number']),
+            'service_id' => $service_id,
+            'service_name' => html_entity_decode($service['service_name']),
+            'service_company' => html_entity_decode($service['company_name']),
+            'service_address' => html_entity_decode($service['company_address']),
+            'service_vat' => getVatValue($service['service_vat']),
+            'service_cost' => $service['service_cost'],
+            'service_unit' => html_entity_decode($service['service_unit']),
+            'service_person' => html_entity_decode($service['contact_person']),
+            'service_number' => getContactNumber($service['contact_number']),
 
-            'material_company_edit' => html_entity_decode($material['material_company_id']),
-            'material_vat_edit' => $material['material_vat'],
-            'material_status_edit' => $material['material_status']
+            'service_company_edit' => html_entity_decode($service['service_company_id']),
+            'service_vat_edit' => $service['service_vat'],
+            'service_status_edit' => $service['service_status']
         );
     }
     echo json_encode($json_data);
