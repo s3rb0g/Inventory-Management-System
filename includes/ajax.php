@@ -18,6 +18,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'login') {
             echo "admin";
          } elseif ($account['access'] == 2) {
             echo "user";
+         } elseif ($account['access'] == 3) {
+            echo "viewer";
          }
       } else {
          echo "error";

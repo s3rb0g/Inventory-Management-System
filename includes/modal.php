@@ -165,8 +165,8 @@
                <input type="hidden" name="edit_id" id="edit_id">
 
                <div class="mb-3">
-                  <label for="title" class="form-label">Title</label>
-                  <select name="edit_title" id="title" class="form-control">
+                  <label for="editTitle" class="form-label">Title</label>
+                  <select name="edit_title" id="editTitle" class="form-control">
                      <option id="edit_title" value="" hidden></option>
                      <option value="Ar.">Architect (Ar.)</option>
                      <option value="Engr.">Engineer (Engr.)</option>
@@ -189,8 +189,8 @@
                </div>
 
                <div class="mb-2">
-                  <label for="role" class="form-label">Role <span style="color: red;">*</span></label>
-                  <select name="edit_role" id="role" class="form-control" required>
+                  <label for="editRole" class="form-label">Role <span style="color: red;">*</span></label>
+                  <select name="edit_role" id="editRole" class="form-control" required>
                      <option id="edit_role" value="" hidden></option>
                      <option value="2">Editor</option>
                      <option value="3">Viewer</option>
@@ -472,11 +472,11 @@
          </div>
 
          <div class="modal-footer">
-            <button type="button" class="btn btn-danger float-right mr-2" id="deleteCompany_btn">
+            <button type="button" class="btn btn-danger float-right mr-2" id="deleteCompany_btn" <?php echo getDisplay() ?>>
                <i class="fa fa-trash pr-1"></i> Delete
             </button>
 
-            <button type="button" class="btn btn-warning float-right mr-2" id="editCompany_btn">
+            <button type="button" class="btn btn-warning float-right mr-2" id="editCompany_btn" <?php echo getDisplay() ?>>
                <i class="fa fa-edit pr-1"></i> Edit
             </button>
 
@@ -757,11 +757,11 @@
          </div>
 
          <div class="modal-footer">
-            <button type="button" class="btn btn-danger float-right mr-2" id="deleteItem_btn">
+            <button type="button" class="btn btn-danger float-right mr-2" id="deleteItem_btn" <?php echo getDisplay() ?>>
                <i class="fa fa-trash pr-1"></i> Delete
             </button>
 
-            <button type="button" class="btn btn-warning float-right mr-2" id="editItem_btn">
+            <button type="button" class="btn btn-warning float-right mr-2" id="editItem_btn" <?php echo getDisplay() ?>>
                <i class="fa fa-edit pr-1"></i> Edit
             </button>
 
@@ -1048,11 +1048,11 @@
          </div>
 
          <div class="modal-footer">
-            <button type="button" class="btn btn-danger float-right mr-2" id="deleteMaterial_btn">
+            <button type="button" class="btn btn-danger float-right mr-2" id="deleteMaterial_btn" <?php echo getDisplay() ?>>
                <i class="fa fa-trash pr-1"></i> Delete
             </button>
 
-            <button type="button" class="btn btn-warning float-right mr-2" id="editMaterial_btn">
+            <button type="button" class="btn btn-warning float-right mr-2" id="editMaterial_btn" <?php echo getDisplay() ?>>
                <i class="fa fa-edit pr-1"></i> Edit
             </button>
 
@@ -1315,11 +1315,11 @@
          </div>
 
          <div class="modal-footer">
-            <button type="button" class="btn btn-danger float-right mr-2" id="deleteService_btn">
+            <button type="button" class="btn btn-danger float-right mr-2" id="deleteService_btn" <?php echo getDisplay() ?>>
                <i class="fa fa-trash pr-1"></i> Delete
             </button>
 
-            <button type="button" class="btn btn-warning float-right mr-2" id="editService_btn">
+            <button type="button" class="btn btn-warning float-right mr-2" id="editService_btn" <?php echo getDisplay() ?>>
                <i class="fa fa-edit pr-1"></i> Edit
             </button>
 

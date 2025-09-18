@@ -91,3 +91,12 @@ function getVatValue($vat)
       return "Unknown Access";
    }
 }
+
+function getDisplay()
+{
+   if ($_SESSION['user_access'] == 3) {
+      return "style='display: none;'";
+   } else {
+      return "";
+   }
+}

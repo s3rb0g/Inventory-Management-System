@@ -3,11 +3,11 @@ include('../includes/header.php');
 
 if (isset($_SESSION['user_access'])) {
    if ($_SESSION['user_access'] == 1) {
-      // header('location: admin.php');
+      header('location: admin.php');
    } elseif ($_SESSION['user_access'] == 2) {
       header('location: user_dashboard.php');
    } elseif ($_SESSION['user_access'] == 3) {
-      header('location: viewer_dashboard.php');
+      //   header('location: viewer_dashboard.php');
    }
 } else {
    header('location: ../index.php');

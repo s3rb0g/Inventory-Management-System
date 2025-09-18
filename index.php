@@ -6,6 +6,8 @@ if (isset($_SESSION['user_access'])) {
       header('location: pages/admin_dashboard.php');
    } elseif ($_SESSION['user_access'] == 2) {
       header('location: user_dashboard.php');
+   } elseif ($_SESSION['user_access'] == 3) {
+      header('location: viewer_dashboard.php');
    }
 } else {
    // header('location: ../index.php');
@@ -108,6 +110,8 @@ if (isset($_SESSION['user_access'])) {
                   window.location.href = "pages/admin_dashboard.php";
                } else if (response === "user") {
                   window.location.href = "pages/user_dashboard.php";
+               } else if (response === "viewer") {
+                  window.location.href = "pages/viewer_dashboard.php";
                } else {
                   alert("Incorrect username or password.");
                   document.querySelector('input[name="username"]').value = "";

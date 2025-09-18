@@ -141,6 +141,63 @@ include("../includes/ajax.php");
                </div>
             </li>
 
+         <?php elseif ($_SESSION['user_access'] == 3): ?>
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="viewer_dashboard.php">
+               <div class="sidebar-brand-icon">
+                  <i class="fas fa-warehouse"></i>
+               </div>
+               <div class="sidebar-brand-text mx-3">Inventory Management</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+               <a class="nav-link" href="viewer_dashboard.php">
+                  <i class="fas fa-fw fa-tachometer-alt"></i>
+                  <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+               Components
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+               <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+                  aria-expanded="true" aria-controls="collapseOne">
+                  <i class="fas fa-fw fa-cogs"></i>
+                  <span>Management</span>
+               </a>
+               <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                  <div class="bg-white py-2 collapse-inner rounded">
+                     <a class="collapse-item" href="viewer_company.php">Company</a>
+                     <a class="collapse-item" href="viewer_item.php">Item</a>
+                  </div>
+               </div>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                  aria-expanded="true" aria-controls="collapseTwo">
+                  <i class="fas fa-boxes"></i>
+                  <span>Operations</span>
+               </a>
+               <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                  <div class="bg-white py-2 collapse-inner rounded">
+                     <a class="collapse-item" href="viewer_material.php">Materials</a>
+                     <a class="collapse-item" href="viewer_service.php">Services</a>
+                  </div>
+               </div>
+            </li>
+
          <?php endif; ?>
 
          <!-- Divider -->
@@ -163,14 +220,14 @@ include("../includes/ajax.php");
             <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-               <!-- <img src="../assets/img/logo.png" alt="" style="height: 50px; width: 50px;">
+               <img src="../assets/img/logo.png" alt="Image not available" class="ml-3" style="height: 50px; width: 50px;">
                <div class="my-auto d-flex align-items-center">
 
                   <div class="ml-2">
                      <h3 class="mb-0">Parametric Engineering and Construction</h3>
                      <h6 class="mt-1">"We Design Better, We Build Better"</h6>
                   </div>
-               </div> -->
+               </div>
 
                <!-- Topbar Navbar -->
                <ul class="navbar-nav ml-auto">
