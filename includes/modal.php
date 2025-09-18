@@ -981,6 +981,33 @@
                   </div>
                </div>
             </div>
+
+            <div class="card shadow mb-4">
+               <div class="card-body card-outline-primary">
+                  <div class="table-responsive">
+                     <h4 class="mb-2">Recent Updates</h4>
+                     <table class="table table-bordered table-striped text-center" id="materialUpdates_table" style="table-layout: fixed; width: 100%;" cellspacing="0">
+                        <thead class="bg-primary text-white">
+                           <tr>
+                              <th class="d-none" style="width: 0;"></th>
+                              <th style="width: 20%;">Item Name</th>
+                              <th style="width: 20%;">Company</th>
+                              <th style="width: 7%;">VAT</th>
+                              <th style="width: 7%;">Unit Price</th>
+                              <th style="width: 13%;">Previous Update</th>
+                              <th style="width: 13%;">Updated By</th>
+                              <th style="width: 13%;">Updated On</th>
+                              <th style="width: 7%;">Status</th>
+                           </tr>
+                        </thead>
+                        <tbody id="materialUpdates_tablebody">
+
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+
          </div>
 
          <div class="modal-footer">

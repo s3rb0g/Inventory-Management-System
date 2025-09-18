@@ -52,14 +52,14 @@ if (isset($_SESSION['user_access'])) {
                            <img src="assets/img/undraw_rocket.svg" alt="logo" class="img-fluid my-5 mb-4" style="width: 150px; height: 150px; object-fit: contain;">
                            <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                         </div>
-                        <form class="user">
+                        <form class="user" id="loginForm">
                            <div class="form-group">
                               <input type="text" class="form-control" name="username" placeholder="Enter Username" required style="width: 350px;">
                            </div>
                            <div class="form-group">
                               <input type="password" class="form-control" name="password" placeholder="Password" required style="width: 350px;">
                            </div>
-                           <button type="button" class="btn btn-primary btn-block" onclick="login()">Login</button>
+                           <button type="submit" class="btn btn-primary btn-block">Login</button>
                         </form>
                      </div>
                   </div>
@@ -84,6 +84,11 @@ if (isset($_SESSION['user_access'])) {
 </html>
 
 <script>
+   $("#loginForm").on("submit", function(e) {
+      e.preventDefault(); // stop normal form submit
+      login(); // call your AJAX function
+   });
+
    function login() {
       var username = document.querySelector('input[name="username"]').value;
       var password = document.querySelector('input[name="password"]').value;

@@ -10,6 +10,26 @@ if (isset($_SESSION['user_access'])) {
    header('location: ../index.php');
 }
 
+function updateMaterial($material_id)
+{
+   global $db_conn;
+   $username = getFullname($_SESSION['user_id']);
+   $result = mysqli_query($db_conn, "SELECT * FROM tbl_materials WHERE id = '$material_id' LIMIT 1");
+
+   if (mysqli_num_rows($result) > 0) {
+      $row = mysqli_fetch_assoc($result);
+
+      $item = getItemName($row['material_item_id']);
+      $company = getCompanyName($row['material_company_id']);
+      $vat = getVatValue($row['material_vat']);
+      $unitprice = $row['material_cost'] . ' ' . $row['material_unit'];
+      $status = getStatusValue($row['material_status']);
+      $date = $row['material_date'];
+
+      mysqli_query($db_conn, "INSERT INTO tbl_history_materials (id, item_name, company, vat, unit_price, previous_update, updated_by, status) VALUES ('$material_id', '$item', '$company', '$vat', '$unitprice', '$date', '$username', '$status')");
+   }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
    // Add Material ....................................................................................
@@ -42,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $edit_material_cost = $_POST['edit_material_cost'];
       $edit_material_unit = filter_input(INPUT_POST, 'edit_material_unit', FILTER_SANITIZE_SPECIAL_CHARS);
       $edit_material_status = $_POST['edit_material_status'];
+
+      updateMaterial($edit_material_id);
 
       $result = mysqli_query($db_conn, "UPDATE tbl_materials SET material_item_id='$edit_material_item', material_company_id='$edit_material_company', material_vat='$edit_material_vat', material_cost='$edit_material_cost', material_unit='$edit_material_unit', material_status='$edit_material_status' WHERE id='$edit_material_id'");
 
@@ -194,6 +216,34 @@ include('../includes/footer.php');
                ")"
 
             );
+
+            $.ajax({
+               type: "POST",
+               url: "../includes/ajax.php",
+               data: {
+                  action: 'material_recent_updates',
+                  material_id: material_id
+               },
+               success: function(updates) {
+                  if ($.fn.DataTable.isDataTable('#materialUpdates_table')) {
+                     $('#materialUpdates_table').DataTable().clear().destroy();
+                  }
+                  $('#materialUpdates_table tbody').html(updates);
+                  $('#materialUpdates_table').DataTable({
+                     // "paging": false,
+                     "searching": false,
+                     // "info": false,
+                     "lengthChange": false,
+                     "ordering": false,
+                     "pageLength": 5,
+                     "autoWidth": false
+                  })
+               },
+               error: function(xhr, status, error) {
+                  console.error("AJAX Error:");
+                  console.error("Response Text: " + xhr.responseText);
+               }
+            });
 
             $('#viewMaterialModal').modal('show');
          },
