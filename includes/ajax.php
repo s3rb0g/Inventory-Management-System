@@ -16,6 +16,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'login') {
 
          if ($account['access'] == 1) {
             echo "admin";
+         } elseif ($account['access'] == 2) {
+            echo "user";
          }
       } else {
          echo "error";

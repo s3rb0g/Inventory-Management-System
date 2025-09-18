@@ -5,6 +5,7 @@ if (isset($_SESSION['user_access'])) {
    if ($_SESSION['user_access'] == 1) {
       header('location: pages/admin_dashboard.php');
    } elseif ($_SESSION['user_access'] == 2) {
+      header('location: user_dashboard.php');
    }
 } else {
    // header('location: ../index.php');
@@ -105,6 +106,8 @@ if (isset($_SESSION['user_access'])) {
             success: function(response) {
                if (response === "admin") {
                   window.location.href = "pages/admin_dashboard.php";
+               } else if (response === "user") {
+                  window.location.href = "pages/user_dashboard.php";
                } else {
                   alert("Incorrect username or password.");
                   document.querySelector('input[name="username"]').value = "";

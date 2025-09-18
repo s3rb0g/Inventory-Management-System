@@ -3,9 +3,9 @@ include('../includes/header.php');
 
 if (isset($_SESSION['user_access'])) {
    if ($_SESSION['user_access'] == 1) {
-      // header('location: admin_dashboard.php');
+      header('location: admin_dashboard.php');
    } elseif ($_SESSION['user_access'] == 2) {
-      header('location: user_dashboard.php');
+      //   header('location: user_dashboard.php');
    }
 } else {
    header('location: ../index.php');
