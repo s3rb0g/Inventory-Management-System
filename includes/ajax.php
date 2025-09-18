@@ -27,6 +27,35 @@ if (isset($_POST['action']) && $_POST['action'] == 'login') {
    }
 }
 
+// ===== Change Password ===== //
+if (isset($_POST['action']) && $_POST['action'] == 'changePassword') {
+   $userId = $_SESSION['user_id'];
+   $currentPassword = filter_input(INPUT_POST, 'currentPassword', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+   $newPassword = filter_input(INPUT_POST, 'newPassword', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+   $confirmPassword = filter_input(INPUT_POST, 'confirmPassword', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+   $results = mysqli_query($db_conn, "SELECT * FROM tbl_accounts WHERE id = '$userId' LIMIT 1");
+
+   if (mysqli_num_rows($results) > 0) {
+      $acc_changePass = mysqli_fetch_assoc($results);
+      if (password_verify($currentPassword, $acc_changePass['password']) && $newPassword === $confirmPassword) {
+         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+         $result1 = mysqli_query($db_conn, "UPDATE tbl_accounts SET password = '$hashedPassword' WHERE id = '$userId'");
+
+         if ($result1) {
+            echo "Password changed successfully.";
+         } else {
+            echo "Failed to change password.";
+         }
+      } else {
+         echo "Incorrect current password or new passwords do not match.";
+      }
+   } else {
+      echo "error";
+   }
+}
+
 // ===== Fetch company details ===== //
 if (isset($_POST['action']) && $_POST['action'] == 'company_details') {
    $company_id = $_POST['company_id'];

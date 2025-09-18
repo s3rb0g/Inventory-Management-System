@@ -32,8 +32,40 @@ include("../includes/modal.php");
 ?>
 
 <script>
-   function closePopup() {
-      document.getElementById('popup').style.display = 'none';
-      document.body.style.overflow = 'auto';
+   $("#passwordForm").on("submit", function(e) {
+      e.preventDefault(); // stop normal form submit
+      changePass(); // call your AJAX function
+   });
+
+   function changePass() {
+      var currentPassword = document.querySelector('input[name="currentPassword"]').value;
+      var newPassword = document.querySelector('input[name="newPassword"]').value;
+      var confirmPassword = document.querySelector('input[name="confirmPassword"]').value;
+
+      $.ajax({
+         type: "POST",
+         url: "../includes/ajax.php",
+         data: {
+            action: "changePassword",
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+            confirmPassword: confirmPassword
+         },
+         success: function(response) {
+
+            if (response === "Password changed successfully.") {
+               $('#passwordModal').modal('hide');
+            }
+
+            alert(response);
+            document.querySelector('input[name="currentPassword"]').value = "";
+            document.querySelector('input[name="newPassword"]').value = "";
+            document.querySelector('input[name="confirmPassword"]').value = "";
+         },
+         error: function() {
+            alert("An error occurred while processing your request.");
+         }
+      });
+
    }
 </script>
